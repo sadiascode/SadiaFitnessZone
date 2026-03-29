@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import '../featurs/chat/screen /chat_screen.dart';
 import '../featurs/features/screen/features_screen.dart';
 import '../featurs/home /screen/home_screen.dart';
@@ -31,9 +30,9 @@ class _AppShellState extends State<AppShell> {
 
     _bottomTabs = [
       BottomTabItem(
-        label: "Home",
-        icon: Icon(Icons.home),
-        page: const HomeScreen(),
+        label: "Nutrition",
+        icon: Icon(Icons.local_dining),
+        page: NutritionScreen(),
       ),
       BottomTabItem(
         label: "Feature",
@@ -41,9 +40,9 @@ class _AppShellState extends State<AppShell> {
         page: FeaturesScreen(),
       ),
       BottomTabItem(
-        label: "Nutrition",
-        icon: Icon(Icons.fitness_center),
-        page: NutritionScreen(),
+        label: "Home",
+        icon: Icon(Icons.home),
+        page: const HomeScreen(),
         isCenter: true,
       ),
       BottomTabItem(
@@ -103,8 +102,8 @@ class SubPageScaffold extends StatelessWidget {
 
   static List<BottomTabItem> get _bottomTabs => [
     BottomTabItem(
-      label: "Home",
-      icon: Icon(Icons.home),
+      label: "Nutrition",
+      icon: Icon(Icons.local_dining),
       page: const SizedBox(),
     ),
     BottomTabItem(
@@ -113,8 +112,8 @@ class SubPageScaffold extends StatelessWidget {
       page: const SizedBox(),
     ),
     BottomTabItem(
-      label: "Nutrition",
-      icon: Icon(Icons.fitness_center),
+      label: "Home",
+      icon: Icon(Icons.home),
       page: const SizedBox(),
       isCenter: true,
     ),

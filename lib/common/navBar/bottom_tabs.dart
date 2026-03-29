@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:todo/featurs/chat/screen%20/chat_screen.dart';
 import 'package:todo/featurs/features/screen/features_screen.dart';
 
@@ -23,7 +22,7 @@ final List<BottomTabItem> bottomTabs = [
   ),
   BottomTabItem(
     label: "Nutrition",
-    icon: Icon(Icons.fitness_center),
+    icon: Icon(Icons.local_dining),
     page: NutritionScreen(),
   ),
   BottomTabItem(

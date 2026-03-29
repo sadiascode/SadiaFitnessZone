@@ -130,7 +130,7 @@ class CustomBottomNav extends StatelessWidget {
           alignment: Alignment.center,
           children: [
             Positioned(
-              top: -26, // Center tab floating and bigger
+              top: -10,
               child: AnimatedScale(
                 duration: const Duration(milliseconds: 300),
                 curve: Curves.easeOutBack,
