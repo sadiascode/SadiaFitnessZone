@@ -23,10 +23,10 @@ class CustomBottomNav extends StatelessWidget {
         padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
         child: Container(
           width: double.infinity,
-          height: 80, // Increased height to prevent overflow
+          height: 65,
           decoration: BoxDecoration(
-            color: const Color(0xFF1E1E24), // Dark theme background
-            borderRadius: BorderRadius.circular(35), // Rounded pill shaped navbar
+            color: const Color(0xFF1E1E24),
+            borderRadius: BorderRadius.circular(35),
             boxShadow: [
               BoxShadow(
                 color: Colors.black.withValues(alpha: 0.3),
