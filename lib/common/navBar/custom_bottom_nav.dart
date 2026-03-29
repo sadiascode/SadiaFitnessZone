@@ -20,8 +20,9 @@ class CustomBottomNav extends StatelessWidget {
 
     return SafeArea(
       child: Padding(
-        padding: const EdgeInsets.only(left: 20, right: 20, bottom: 16, top: 12),
+        padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
         child: Container(
+          width: double.infinity,
           height: 70,
           decoration: BoxDecoration(
             color: const Color(0xFF1E1E24), // Dark theme background
@@ -58,8 +59,8 @@ class CustomBottomNav extends StatelessWidget {
     final isActive = currentIndex == index;
 
     Widget iconWidget = SizedBox(
-      width: 24,
-      height: 24,
+      width: 32,
+      height: 32,
       child: FittedBox(
         fit: BoxFit.scaleDown,
         child: tabs[index].icon,
@@ -127,8 +128,8 @@ class CustomBottomNav extends StatelessWidget {
                 curve: Curves.easeOutBack,
                 scale: isActive ? 1.05 : 1.0,
                 child: Container(
-                  width: 64,
-                  height: 64,
+                  width: 68,
+                  height: 68,
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
                     // Gradient color #86CC55 #1E6BD1 #3CB189
@@ -157,8 +158,8 @@ class CustomBottomNav extends StatelessWidget {
                         BlendMode.srcIn,
                       ),
                       child: SizedBox(
-                        width: 28,
-                        height: 28,
+                        width: 38,
+                        height: 38,
                         child: FittedBox(
                           fit: BoxFit.scaleDown,
                           child: tabs[index].icon,

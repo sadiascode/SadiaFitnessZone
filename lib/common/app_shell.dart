@@ -11,7 +11,7 @@ import 'navBar/custom_bottom_nav.dart';
 class AppShell extends StatefulWidget {
   final int initialIndex;
 
-  const AppShell({super.key, this.initialIndex = 0});
+  const AppShell({super.key, this.initialIndex = 2});
 
   @override
   State<AppShell> createState() => _AppShellState();
