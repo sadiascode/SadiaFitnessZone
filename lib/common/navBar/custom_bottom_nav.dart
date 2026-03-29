@@ -56,8 +56,32 @@ class CustomBottomNav extends StatelessWidget {
 
   Widget _buildTab(int index) {
     final isActive = currentIndex == index;
-    // active and inactive state colors
-    final iconColor = isActive ? Colors.white : const Color(0xFFA0A0A0);
+
+    Widget iconWidget = SizedBox(
+      width: 24,
+      height: 24,
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: tabs[index].icon,
+      ),
+    );
+
+    if (isActive) {
+      iconWidget = ShaderMask(
+        shaderCallback: (bounds) => const LinearGradient(
+          colors: [Color(0xFF86CC55), Color(0xFF1E6BD1)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ).createShader(bounds),
+        blendMode: BlendMode.srcIn,
+        child: iconWidget,
+      );
+    } else {
+      iconWidget = ColorFiltered(
+        colorFilter: const ColorFilter.mode(Color(0xFFA0A0A0), BlendMode.srcIn),
+        child: iconWidget,
+      );
+    }
 
     return Expanded(
       child: GestureDetector(
@@ -74,40 +98,7 @@ class CustomBottomNav extends StatelessWidget {
               child: AnimatedOpacity(
                 duration: const Duration(milliseconds: 300),
                 opacity: isActive ? 1.0 : 0.6,
-                child: ColorFiltered(
-                  colorFilter: ColorFilter.mode(iconColor, BlendMode.srcIn),
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: tabs[index].icon,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 4),
-            AnimatedOpacity(
-              duration: const Duration(milliseconds: 300),
-              opacity: isActive ? 1.0 : 0.0,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                height: 4,
-                width: isActive ? 16 : 0,
-                decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF86CC55), Color(0xFF1E6BD1)],
-                  ),
-                  borderRadius: BorderRadius.circular(2),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF86CC55).withValues(alpha: 0.4),
-                      blurRadius: 4,
-                      spreadRadius: 1,
-                    )
-                  ],
-                ),
+                child: iconWidget,
               ),
             ),
           ],
@@ -151,7 +142,6 @@ class CustomBottomNav extends StatelessWidget {
                       end: Alignment.bottomRight,
                     ),
                     boxShadow: [
-                      // Glowing gradient circle effect
                       BoxShadow(
                         color: const Color(0xFF3CB189).withValues(alpha: 0.5),
                         blurRadius: 16,
