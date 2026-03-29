@@ -56,6 +56,8 @@ class _HomeScreenState extends State<HomeScreen> {
       routines: [
         Routine('Paced Jog', '15 Mins', '120 kcal', Icons.directions_run),
         Routine('Hill Sprints', '20 Mins', '250 kcal', Icons.terrain),
+        Routine('Stair Climbing', '10 Mins', '180 kcal', Icons.stairs),
+        Routine('Tempo Run', '25 Mins', '350 kcal', Icons.timer),
         Routine('Cool Down Walk', '10 Mins', '50 kcal', Icons.directions_walk),
       ],
     ),
@@ -64,11 +66,13 @@ class _HomeScreenState extends State<HomeScreen> {
       icon: Icons.directions_bike,
       featuredTitle: 'Mountain Trail',
       featuredSubtitle: '45 Mins • 410 kcal',
-      featuredImage: 'https://images.unsplash.com/photo-1511994298241-608e281149c0?q=80&w=1470&auto=format&fit=crop',
+      featuredImage: 'https://images.unsplash.com/photo-1475483768296-6163e08872a1?q=80&w=1470&auto=format&fit=crop',
       routines: [
         Routine('Endurance Ride', '30 Mins', '300 kcal', Icons.directions_bike),
         Routine('Speed Intervals', '20 Mins', '280 kcal', Icons.speed),
+        Routine('Uphill Climb', '25 Mins', '350 kcal', Icons.landscape),
         Routine('Recovery Spin', '15 Mins', '100 kcal', Icons.pedal_bike),
+        Routine('Core & Cycle', '10 Mins', '120 kcal', Icons.fitness_center),
       ],
     ),
     CategoryData(
@@ -76,10 +80,12 @@ class _HomeScreenState extends State<HomeScreen> {
       icon: Icons.pool,
       featuredTitle: 'Freestyle Flow',
       featuredSubtitle: '40 Mins • 380 kcal',
-      featuredImage: 'https://images.unsplash.com/photo-1519681393784-d120267933ba?q=80&w=1470&auto=format&fit=crop',
+      featuredImage: 'https://images.unsplash.com/photo-1530549387789-4c1017266635?q=80&w=1470&auto=format&fit=crop',
       routines: [
         Routine('Laps Warm-up', '10 Mins', '90 kcal', Icons.pool),
         Routine('Breath Control', '20 Mins', '180 kcal', Icons.water),
+        Routine('Butterfly Strokes', '15 Mins', '250 kcal', Icons.waves),
+        Routine('Water Aerobics', '25 Mins', '200 kcal', Icons.accessibility_new),
       ],
     ),
     CategoryData(
@@ -91,6 +97,9 @@ class _HomeScreenState extends State<HomeScreen> {
       routines: [
         Routine('Burpee Challenge', '10 Mins', '200 kcal', Icons.local_fire_department),
         Routine('Core Crusher', '15 Mins', '250 kcal', Icons.fitness_center),
+        Routine('Jumping Jacks', '5 Mins', '80 kcal', Icons.self_improvement),
+        Routine('Mountain Climbers', '10 Mins', '180 kcal', Icons.terrain),
+        Routine('Squat Jumps', '12 Mins', '220 kcal', Icons.upgrade),
       ],
     ),
   ];
@@ -154,15 +163,16 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
         Container(
-          width: 50,
-          height: 50,
+          height: 45,
+          width: 45,
           decoration: BoxDecoration(
+            color: Colors.grey.shade200,
             shape: BoxShape.circle,
-            border: Border.all(color: const Color(0xFF86CC55), width: 2),
-            image: const DecorationImage(
-              image: NetworkImage("https://i.pravatar.cc/150?img=47"), // Placeholder avatar
-              fit: BoxFit.cover,
-            ),
+          ),
+          child: const Icon(
+            Icons.person,
+            size: 28,
+            color: Colors.black,
           ),
         )
       ],

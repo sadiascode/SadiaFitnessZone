@@ -1,5 +1,21 @@
 import 'package:flutter/material.dart';
 
+class FoodItem {
+  final String name;
+  final String description;
+  final String calories;
+  final String macros;
+  final String imageUrl;
+
+  FoodItem({
+    required this.name,
+    required this.description,
+    required this.calories,
+    required this.macros,
+    required this.imageUrl,
+  });
+}
+
 class NutritionScreen extends StatefulWidget {
   const NutritionScreen({super.key});
 
@@ -8,10 +24,324 @@ class NutritionScreen extends StatefulWidget {
 }
 
 class _NutritionScreenState extends State<NutritionScreen> {
+  final Color bgColor = const Color(0xFF121215);
+  final Color cardColor = const Color(0xFF1E1E24);
+  final Color primaryGreen = const Color(0xFF86CC55);
+  final Gradient primaryGradient = const LinearGradient(
+    colors: [Color(0xFF86CC55), Color(0xFF1E6BD1)],
+    begin: Alignment.topLeft,
+    end: Alignment.bottomRight,
+  );
+
+  bool isWeightLoss = true;
+
+  final List<FoodItem> weightLossFoods = [
+    FoodItem(
+      name: "Grilled Chicken Salad",
+      description: "Lean protein packed with fiber from mixed greens. Keeps you full for hours.",
+      calories: "320 kcal",
+      macros: "35g Protein • 12g Carbs • 8g Fat",
+      imageUrl: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?q=80&w=1470&auto=format&fit=crop",
+    ),
+    FoodItem(
+      name: "Glazed Salmon Bowl",
+      description: "Rich in Omega-3s and combined with quinoa for healthy slow-digesting complex carbs.",
+      calories: "450 kcal",
+      macros: "40g Protein • 25g Carbs • 15g Fat",
+      imageUrl: "https://images.unsplash.com/photo-1467003909585-2f8a72700288?q=80&w=1470&auto=format&fit=crop",
+    ),
+    FoodItem(
+      name: "Oats & Fresh Berries",
+      description: "Low-calorie breakfast powerhouse. Provides excellent morning energy without the sugar crash.",
+      calories: "280 kcal",
+      macros: "10g Protein • 45g Carbs • 5g Fat",
+      imageUrl: "https://images.unsplash.com/photo-1511690656952-34342bb7c2f2?q=80&w=1470&auto=format&fit=crop",
+    ),
+    FoodItem(
+      name: "Avocado & Egg Toast",
+      description: "Healthy fats from avocado instantly crush cravings. Paired with whole grain bread.",
+      calories: "350 kcal",
+      macros: "14g Protein • 28g Carbs • 18g Fat",
+      imageUrl: "https://images.unsplash.com/photo-1525351484163-7529414344d8?q=80&w=1470&auto=format&fit=crop",
+    ),
+    FoodItem(
+      name: "Greek Yogurt & Honey",
+      description: "Creamy, high-protein snack that satisfies sweet cravings without packing on weight.",
+      calories: "180 kcal",
+      macros: "20g Protein • 15g Carbs • 3g Fat",
+      imageUrl: "https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=1470&auto=format&fit=crop",
+    ),
+    FoodItem(
+      name: "Green Detox Smoothie",
+      description: "Packed with spinach, green apple, and ginger. An incredibly low-calorie metabolism booster.",
+      calories: "150 kcal",
+      macros: "4g Protein • 25g Carbs • 1g Fat",
+      imageUrl: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=1470&auto=format&fit=crop",
+    ),
+  ];
+
+  final List<FoodItem> weightGainFoods = [
+    FoodItem(
+      name: "Peanut Butter Smoothie",
+      description: "A colossal calorie bomb! Blended with banana, whole milk, and whey protein powder.",
+      calories: "850 kcal",
+      macros: "50g Protein • 90g Carbs • 30g Fat",
+      imageUrl: "https://images.unsplash.com/photo-1556881286-fc6915169721?q=80&w=1470&auto=format&fit=crop",
+    ),
+    FoodItem(
+      name: "Beef Steak & Rice",
+      description: "The ultimate muscle builder. Massive iron content paired with easily digestible white rice.",
+      calories: "920 kcal",
+      macros: "65g Protein • 85g Carbs • 40g Fat",
+      imageUrl: "https://images.unsplash.com/photo-1600891964092-4316c288032e?q=80&w=1470&auto=format&fit=crop",
+    ),
+    FoodItem(
+      name: "Mixed Nuts & Trail Mix",
+      description: "Calorie dense snacking. Almonds, walnuts, and dried fruits for continuous energy surplus.",
+      calories: "600 kcal (per cup)",
+      macros: "20g Protein • 45g Carbs • 50g Fat",
+      imageUrl: "https://images.unsplash.com/photo-1550828520-4cb496926fc9?q=80&w=1470&auto=format&fit=crop",
+    ),
+    FoodItem(
+      name: "Whole Wheat Pasta Bowl",
+      description: "A gigantic bowl of complex carbs with meat sauce. Crucial for heavy bulking phases.",
+      calories: "780 kcal",
+      macros: "35g Protein • 110g Carbs • 18g Fat",
+      imageUrl: "https://images.unsplash.com/photo-1621996346565-e3dbc646d9a9?q=80&w=1470&auto=format&fit=crop",
+    ),
+    FoodItem(
+      name: "Double Beef Burger",
+      description: "A massive caloric surplus cheat meal packed with extreme protein and heavy fats.",
+      calories: "1150 kcal",
+      macros: "70g Protein • 80g Carbs • 65g Fat",
+      imageUrl: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?q=80&w=1470&auto=format&fit=crop",
+    ),
+    FoodItem(
+      name: "Stack of Protein Pancakes",
+      description: "Huge breakfast surplus loaded with whey, oats, and heavy maple syrup for massive gains.",
+      calories: "880 kcal",
+      macros: "55g Protein • 95g Carbs • 20g Fat",
+      imageUrl: "https://images.unsplash.com/photo-1565299507177-b0ac66763828?q=80&w=1470&auto=format&fit=crop",
+    ),
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    List<FoodItem> currentList = isWeightLoss ? weightLossFoods : weightGainFoods;
 
+    return Scaffold(
+      backgroundColor: bgColor,
+      body: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.only(left: 20, right: 20, top: 20, bottom: 120),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _buildHeader(),
+              const SizedBox(height: 30),
+              _buildToggleSwitch(),
+              const SizedBox(height: 30),
+              _buildFoodList(currentList),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildHeader() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Text(
+          "Nutrition Guide",
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Text(
+          "Fuel your body for your exact fitness goals",
+          style: TextStyle(
+            color: Colors.white.withValues(alpha: 0.6),
+            fontSize: 16,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildToggleSwitch() {
+    return Container(
+      height: 55,
+      padding: const EdgeInsets.all(4),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(30),
+        border: Border.all(color: Colors.white.withValues(alpha: 0.05)),
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  isWeightLoss = true;
+                });
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                decoration: BoxDecoration(
+                  gradient: isWeightLoss ? primaryGradient : null,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  "Weight Loss",
+                  style: TextStyle(
+                    color: isWeightLoss ? Colors.white : Colors.white.withValues(alpha: 0.5),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: GestureDetector(
+              onTap: () {
+                setState(() {
+                  isWeightLoss = false;
+                });
+              },
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                decoration: BoxDecoration(
+                  gradient: !isWeightLoss ? primaryGradient : null,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                alignment: Alignment.center,
+                child: Text(
+                  "Weight Gain",
+                  style: TextStyle(
+                    color: !isWeightLoss ? Colors.white : Colors.white.withValues(alpha: 0.5),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 15,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildFoodList(List<FoodItem> list) {
+    return ListView.builder(
+      physics: const NeverScrollableScrollPhysics(),
+      shrinkWrap: true,
+      itemCount: list.length,
+      itemBuilder: (context, index) {
+        return _buildFoodCard(list[index]);
+      },
+    );
+  }
+
+  Widget _buildFoodCard(FoodItem item) {
+    return Container(
+      margin: const EdgeInsets.only(bottom: 16),
+      decoration: BoxDecoration(
+        color: cardColor,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.2),
+            blurRadius: 10,
+            offset: const Offset(0, 5),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Container(
+            width: 120,
+            height: 140,
+            decoration: BoxDecoration(
+              borderRadius: const BorderRadius.only(topLeft: Radius.circular(20), bottomLeft: Radius.circular(20)),
+              image: DecorationImage(
+                image: NetworkImage(item.imageUrl),
+                fit: BoxFit.cover,
+              ),
+            ),
+          ),
+          const SizedBox(width: 16),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(top: 12, bottom: 12, right: 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    item.name,
+                    style: const TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  const SizedBox(height: 6),
+                  Text(
+                    item.description,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      color: Colors.white.withValues(alpha: 0.7),
+                      fontSize: 12,
+                      height: 1.3,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  Row(
+                    children: [
+                      Icon(Icons.local_fire_department, color: primaryGreen, size: 16),
+                      const SizedBox(width: 4),
+                      Text(
+                        item.calories,
+                        style: TextStyle(
+                          color: primaryGreen,
+                          fontSize: 13,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 4),
+                  Row(
+                    children: [
+                      Icon(Icons.pie_chart_outline, color: const Color(0xFF1E6BD1), size: 16),
+                      const SizedBox(width: 4),
+                      Expanded(
+                        child: Text(
+                          item.macros,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            color: Colors.white.withValues(alpha: 0.6),
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
