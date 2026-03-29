@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:todo/auth/screen/forget_screen.dart';
-import 'package:todo/auth/screen/signup_screen.dart';
-import '../../common/custom_button.dart';
+import 'package:todo/featurs/auth/screen/signup_screen.dart';
+import '../../../common/custom_button.dart';
+import '../../../common/app_shell.dart';
 import '../widget/custom_screen.dart';
 import '../widget/custom_text_field.dart';
+import 'forget_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -65,7 +66,13 @@ class LoginScreen extends StatelessWidget {
             const SizedBox(height: 20),
             CustomButton(
               text: "Sign in",
-              onTap:(){},
+              onTap:(){
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const AppShell()),
+                    (route) => false,
+                  );
+              },
             ),
             const SizedBox(height: 16),
 

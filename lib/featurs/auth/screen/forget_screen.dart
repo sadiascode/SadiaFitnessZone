@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo/auth/screen/verify_screen.dart';
-import '../../common/custom_button.dart';
+import 'package:todo/featurs/auth/screen/verify_screen.dart';
+import '../../../common/custom_button.dart';
 import '../widget/custom_screen.dart';
 import '../widget/custom_text_field.dart';
 
@@ -62,7 +62,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
             SizedBox(height: 30),
             CustomButton(text: "Send code", onTap: (){
               Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => const VerifyScreen()));
+                  context, MaterialPageRoute(builder: (_) =>  VerifyScreen()));
             }),
           ],
         ),

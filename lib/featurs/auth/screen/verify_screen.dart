@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:pin_code_fields/pin_code_fields.dart';
-import 'package:todo/auth/screen/reset_screen.dart';
-
-import '../../common/custom_button.dart';
+import 'package:todo/featurs/auth/screen/reset_screen.dart';
+import '../../../common/custom_button.dart';
 import '../widget/custom_screen.dart';
 
 

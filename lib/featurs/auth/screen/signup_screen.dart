@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:todo/auth/screen/login_screen.dart';
-import '../../common/custom_button.dart';
+import '../../../common/custom_button.dart';
 import '../widget/custom_screen.dart';
 import '../widget/custom_text_field.dart';
+import 'login_screen.dart';
 
 class SignupScreen extends StatefulWidget {
   const SignupScreen({super.key});

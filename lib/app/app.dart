@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../auth/screen/login_screen.dart';
+import '../featurs/auth/screen/login_screen.dart';
 
 class Todo extends StatelessWidget {
   const Todo({super.key});
