@@ -23,7 +23,7 @@ class CustomBottomNav extends StatelessWidget {
         padding: const EdgeInsets.only(left: 5, right: 5, top: 5),
         child: Container(
           width: double.infinity,
-          height: 70,
+          height: 80, // Increased height to prevent overflow
           decoration: BoxDecoration(
             color: const Color(0xFF1E1E24), // Dark theme background
             borderRadius: BorderRadius.circular(35), // Rounded pill shaped navbar
@@ -44,10 +44,7 @@ class CustomBottomNav extends StatelessWidget {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: List.generate(tabs.length, (i) {
-              if (i == centerIndex) {
-                return _buildCenterTab(i);
-              }
-              return _buildTab(i);
+              return _buildTab(i, isCenter: i == centerIndex);
             }),
           ),
         ),
@@ -55,34 +52,28 @@ class CustomBottomNav extends StatelessWidget {
     );
   }
 
-  Widget _buildTab(int index) {
+  Widget _buildTab(int index, {required bool isCenter}) {
     final isActive = currentIndex == index;
 
     Widget iconWidget = SizedBox(
-      width: 32,
-      height: 32,
+      width: isCenter ? 36 : 32,
+      height: isCenter ? 36 : 32,
       child: FittedBox(
         fit: BoxFit.scaleDown,
         child: tabs[index].icon,
       ),
     );
 
-    if (isActive) {
-      iconWidget = ShaderMask(
-        shaderCallback: (bounds) => const LinearGradient(
-          colors: [Color(0xFF86CC55), Color(0xFF1E6BD1)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ).createShader(bounds),
-        blendMode: BlendMode.srcIn,
-        child: iconWidget,
-      );
-    } else {
-      iconWidget = ColorFiltered(
-        colorFilter: const ColorFilter.mode(Color(0xFFA0A0A0), BlendMode.srcIn),
-        child: iconWidget,
-      );
-    }
+    iconWidget = ColorFiltered(
+      colorFilter: ColorFilter.mode(
+        isActive ? Colors.white : const Color(0xFFA0A0A0),
+        BlendMode.srcIn,
+      ),
+      child: iconWidget,
+    );
+
+    // Very subtle translation so it doesn't bleed out of the background pill box.
+    final double translateY = isActive ? (isCenter ? -8.0 : -2.0) : 0.0;
 
     return Expanded(
       child: GestureDetector(
@@ -94,80 +85,42 @@ class CustomBottomNav extends StatelessWidget {
           children: [
             AnimatedContainer(
               duration: const Duration(milliseconds: 300),
-              curve: Curves.easeOutQuint,
-              transform: Matrix4.translationValues(0, isActive ? -2 : 0, 0),
-              child: AnimatedOpacity(
-                duration: const Duration(milliseconds: 300),
-                opacity: isActive ? 1.0 : 0.6,
-                child: iconWidget,
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCenterTab(int index) {
-    final isActive = currentIndex == index;
-    
-    return GestureDetector(
-      onTap: () => onTap(index),
-      behavior: HitTestBehavior.opaque,
-      child: Container(
-        width: 75,
-        alignment: Alignment.center,
-        child: Stack(
-          clipBehavior: Clip.none,
-          alignment: Alignment.center,
-          children: [
-            Positioned(
-              top: -10,
-              child: AnimatedScale(
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeOutBack,
-                scale: isActive ? 1.05 : 1.0,
-                child: Container(
-                  width: 68,
-                  height: 68,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    // Gradient color #86CC55 #1E6BD1 #3CB189
-                    gradient: const LinearGradient(
-                      colors: [
-                        Color(0xFF86CC55),
-                        Color(0xFF3CB189),
-                        Color(0xFF1E6BD1),
-                      ],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: const Color(0xFF3CB189).withValues(alpha: 0.5),
-                        blurRadius: 16,
-                        spreadRadius: 2,
-                        offset: const Offset(0, 8),
-                      ),
-                    ],
-                  ),
-                  child: Center(
-                    child: ColorFiltered(
-                      colorFilter: const ColorFilter.mode(
-                        Colors.white,
-                        BlendMode.srcIn,
-                      ),
-                      child: SizedBox(
-                        width: 38,
-                        height: 38,
-                        child: FittedBox(
-                          fit: BoxFit.scaleDown,
-                          child: tabs[index].icon,
+              curve: Curves.easeOutCubic, // Changed from Back to prevent size overshoot overflow
+              transform: Matrix4.translationValues(0, translateY, 0),
+              padding: EdgeInsets.all(isActive ? (isCenter ? 10.0 : 8.0) : 0.0),
+              child: Stack(
+                alignment: Alignment.center,
+                clipBehavior: Clip.none,
+                children: [
+                  Positioned.fill(
+                    child: AnimatedOpacity(
+                      duration: const Duration(milliseconds: 300),
+                      opacity: isActive ? 1.0 : 0.0,
+                      child: Container(
+                        decoration: BoxDecoration(
+                          gradient: const LinearGradient(
+                            colors: [Color(0xFF86CC55), Color(0xFF1E6BD1)],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(isCenter ? 24 : 14),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color(0xFF1E6BD1).withValues(alpha: 0.3),
+                              blurRadius: 8,
+                              offset: const Offset(0, 4),
+                            )
+                          ],
                         ),
                       ),
                     ),
                   ),
-                ),
+                  AnimatedOpacity(
+                    duration: const Duration(milliseconds: 300),
+                    opacity: isActive ? 1.0 : 0.6,
+                    child: iconWidget,
+                  ),
+                ],
               ),
             ),
           ],
