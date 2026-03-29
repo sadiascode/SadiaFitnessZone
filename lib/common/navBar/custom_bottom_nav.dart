@@ -87,7 +87,6 @@ class CustomBottomNav extends StatelessWidget {
               duration: const Duration(milliseconds: 300),
               curve: Curves.easeOutCubic, // Changed from Back to prevent size overshoot overflow
               transform: Matrix4.translationValues(0, translateY, 0),
-              padding: EdgeInsets.all(isActive ? (isCenter ? 10.0 : 8.0) : 0.0),
               child: Stack(
                 alignment: Alignment.center,
                 clipBehavior: Clip.none,
@@ -115,10 +114,15 @@ class CustomBottomNav extends StatelessWidget {
                       ),
                     ),
                   ),
-                  AnimatedOpacity(
+                  AnimatedPadding(
                     duration: const Duration(milliseconds: 300),
-                    opacity: isActive ? 1.0 : 0.6,
-                    child: iconWidget,
+                    curve: Curves.easeOutCubic,
+                    padding: EdgeInsets.all(isActive ? (isCenter ? 10.0 : 8.0) : 8.0),
+                    child: AnimatedOpacity(
+                      duration: const Duration(milliseconds: 300),
+                      opacity: isActive ? 1.0 : 0.6,
+                      child: iconWidget,
+                    ),
                   ),
                 ],
               ),
