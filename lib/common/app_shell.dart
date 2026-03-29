@@ -6,7 +6,7 @@ import '../featurs/home /screen/home_screen.dart';
 import '../featurs/nutrition/screen/nutrition_screen.dart';
 import '../featurs/profile /screen/profile_screen.dart';
 import 'navBar/bottom_tab_item.dart';
-import 'navbar/custom_bottom_nav.dart';
+import 'navBar/custom_bottom_nav.dart';
 
 
 class AppShell extends StatefulWidget {
@@ -32,9 +32,8 @@ class _AppShellState extends State<AppShell> {
     _bottomTabs = [
       BottomTabItem(
         label: "Home",
-        icon: SvgPicture.asset("assets/homes.svg"),
+        icon: Icon(Icons.home),
         page: const HomeScreen(),
-        isCenter: true,
       ),
       BottomTabItem(
         label: "Feature",
@@ -43,12 +42,13 @@ class _AppShellState extends State<AppShell> {
       ),
       BottomTabItem(
         label: "Nutrition",
-        icon: SvgPicture.asset("assets/doctor.svg"),
+        icon: Icon(Icons.fitness_center),
         page: NutritionScreen(),
+        isCenter: true,
       ),
       BottomTabItem(
         label: "Chat",
-        icon: Icon(Icons.settings),
+        icon: Icon(Icons.chat),
         page: ChatScreen(),
       ),
       BottomTabItem(
@@ -72,6 +72,7 @@ class _AppShellState extends State<AppShell> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: IndexedStack(
         index: _currentIndex,
         children: _pages,
@@ -103,28 +104,28 @@ class SubPageScaffold extends StatelessWidget {
   static List<BottomTabItem> get _bottomTabs => [
     BottomTabItem(
       label: "Home",
-      icon: SvgPicture.asset("assets/homes.svg"),
+      icon: Icon(Icons.home),
+      page: const SizedBox(),
+    ),
+    BottomTabItem(
+      label: "Feature",
+      icon: Icon(Icons.fitness_center),
+      page: const SizedBox(),
+    ),
+    BottomTabItem(
+      label: "Nutrition",
+      icon: Icon(Icons.fitness_center),
       page: const SizedBox(),
       isCenter: true,
     ),
     BottomTabItem(
-      label: "Medicine",
-      icon: SvgPicture.asset("assets/medicine.svg"),
-      page: const SizedBox(),
-    ),
-    BottomTabItem(
-      label: "Doctor",
-      icon: SvgPicture.asset("assets/doctor.svg"),
-      page: const SizedBox(),
-    ),
-    BottomTabItem(
       label: "Chat",
-      icon: SvgPicture.asset("assets/chat.svg"),
+      icon: Icon(Icons.chat),
       page: const SizedBox(),
     ),
     BottomTabItem(
       label: "Profile",
-      icon: SvgPicture.asset("assets/profile.svg"),
+      icon: Icon(Icons.person),
       page: const SizedBox(),
     ),
   ];
@@ -132,6 +133,7 @@ class SubPageScaffold extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       backgroundColor: backgroundColor ?? const Color(0xFFFFFAF7),
       appBar: appBar,
       body: body,

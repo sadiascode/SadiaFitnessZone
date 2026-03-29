@@ -12,7 +12,7 @@ import 'bottom_tab_item.dart';
 final List<BottomTabItem> bottomTabs = [
   BottomTabItem(
     label: "Home",
-    icon: SvgPicture.asset("assets/homes.svg"),
+    icon: Icon(Icons.home),
     page: HomeScreen(),
     isCenter: true,
   ),
@@ -23,12 +23,12 @@ final List<BottomTabItem> bottomTabs = [
   ),
   BottomTabItem(
     label: "Nutrition",
-    icon: SvgPicture.asset("assets/doctor.svg"),
+    icon: Icon(Icons.fitness_center),
     page: NutritionScreen(),
   ),
   BottomTabItem(
     label: "Chat",
-    icon: Icon(Icons.settings),
+    icon: Icon(Icons.chat),
     page: ChatScreen(),
   ),
   BottomTabItem(
