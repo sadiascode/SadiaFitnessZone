@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo/featurs/auth/screen/signup_screen.dart';
 import '../../../common/custom_button.dart';
 import '../../../common/app_shell.dart';
@@ -6,12 +7,68 @@ import '../widget/custom_screen.dart';
 import '../widget/custom_text_field.dart';
 import 'forget_screen.dart';
 
-class LoginScreen extends StatelessWidget {
+class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  State<LoginScreen> createState() => _LoginScreenState();
+}
 
+class _LoginScreenState extends State<LoginScreen> {
+  final email = TextEditingController();
+  final password = TextEditingController();
+  bool loading = false;
+
+  final supabase = Supabase.instance.client;
+
+  // Supabase login function
+  login() async {
+    if (email.text.isEmpty || password.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter email and password')),
+      );
+      return;
+    }
+
+    setState(() {
+      loading = true;
+    });
+
+    try {
+      final response = await supabase.auth.signInWithPassword(
+        email: email.text,
+        password: password.text,
+      );
+
+      if (response.user != null) {
+        // Login successful, navigate to AppShell
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const AppShell()),
+              (route) => false,
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Invalid email or password')),
+        );
+      }
+    } on AuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message)),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Unexpected error: $e')),
+      );
+    } finally {
+      setState(() {
+        loading = false;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: const Color(0xFF0F172A),
       body: CustomScreen(
@@ -24,29 +81,35 @@ class LoginScreen extends StatelessWidget {
             Center(
               child: const Text(
                 "Welcome to Sadia Fitness Zone",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.w600),
+                style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
               ),
             ),
             const SizedBox(height: 16),
-            const Text("User Name"),
+            const Text("Enter Email", style: TextStyle(color: Colors.white)),
             const SizedBox(height: 6),
             CustomTextfield(
-              hintText: "Enter your name",
+              hintText: "Enter Your Email",
+              controller: email,
             ),
             const SizedBox(height: 12),
-            const Text("Password"),
+            const Text("Password", style: TextStyle(color: Colors.white)),
             const SizedBox(height: 6),
             CustomTextfield(
-              hintText: "Password",
+              hintText: "Enter Your Password",
               isPassword: true,
+              controller: password,
             ),
             const SizedBox(height: 10),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
-                  children: [
-                    const Text("Remember Me", style: TextStyle(fontSize: 14)),
+                  children: const [
+                    Text("Remember Me",
+                        style: TextStyle(fontSize: 14, color: Colors.white)),
                   ],
                 ),
                 TextButton(
@@ -58,36 +121,41 @@ class LoginScreen extends StatelessWidget {
                   },
                   child: const Text(
                     "Forgot Password?",
-                    style: TextStyle(fontSize: 14, color: Color(0xff333333)),
+                    style: TextStyle(fontSize: 14, color: Color(0xff3CB189)),
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 20),
+            // Sign In button with loading spinner
             CustomButton(
-              text: "Sign in",
-              onTap:(){
-                  Navigator.pushAndRemoveUntil(
-                    context,
-                    MaterialPageRoute(builder: (_) => const AppShell()),
-                    (route) => false,
-                  );
-              },
+              text: loading ? "" : "Sign in",
+              onTap: login,
+              child: loading
+                  ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                  strokeWidth: 2,
+                ),
+              )
+                  : null,
             ),
             const SizedBox(height: 16),
-
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Text(
                   "Don't have an account? ",
-                  style: TextStyle(color: Colors.black87, fontSize: 14),
+                  style: TextStyle(color: Colors.white70, fontSize: 14),
                 ),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (_) => const SignupScreen()),
+                      MaterialPageRoute(
+                          builder: (_) => const SignupScreen()),
                     );
                   },
                   child: const Text(
