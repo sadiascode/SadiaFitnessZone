@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo/featurs/auth/screen/signup_screen.dart';
+import 'package:todo/featurs/home%20/screen/home_screen.dart';
 import '../../../common/custom_button.dart';
 import '../../../common/app_shell.dart';
 import '../widget/custom_screen.dart';
@@ -84,18 +85,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.w600,
-                    color: Colors.white),
+                    color: Colors.black87),
               ),
             ),
             const SizedBox(height: 16),
-            const Text("Enter Email", style: TextStyle(color: Colors.white)),
+            const Text("Enter Email", style: TextStyle(color: Colors.black87)),
             const SizedBox(height: 6),
             CustomTextfield(
               hintText: "Enter Your Email",
               controller: email,
             ),
             const SizedBox(height: 12),
-            const Text("Password", style: TextStyle(color: Colors.white)),
+            const Text("Password", style: TextStyle(color: Colors.black87)),
             const SizedBox(height: 6),
             CustomTextfield(
               hintText: "Enter Your Password",
@@ -109,7 +110,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 Row(
                   children: const [
                     Text("Remember Me",
-                        style: TextStyle(fontSize: 14, color: Colors.white)),
+                        style: TextStyle(fontSize: 14, color: Colors.black87)),
                   ],
                 ),
                 TextButton(
@@ -126,21 +127,16 @@ class _LoginScreenState extends State<LoginScreen> {
                 ),
               ],
             ),
-            const SizedBox(height: 20),
+            const SizedBox(height: 10),
             // Sign In button with loading spinner
             CustomButton(
-              text: loading ? "" : "Sign in",
-              onTap: login,
-              child: loading
-                  ? const SizedBox(
-                height: 20,
-                width: 20,
-                child: CircularProgressIndicator(
-                  color: Colors.white,
-                  strokeWidth: 2,
-                ),
-              )
-                  : null,
+              text: "Sign in",
+              onTap: (){
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (_) => const AppShell()),
+                );
+              },
             ),
             const SizedBox(height: 16),
             Row(
@@ -148,7 +144,7 @@ class _LoginScreenState extends State<LoginScreen> {
               children: [
                 const Text(
                   "Don't have an account? ",
-                  style: TextStyle(color: Colors.white70, fontSize: 14),
+                  style: TextStyle(color: Colors.black87, fontSize: 14),
                 ),
                 GestureDetector(
                   onTap: () {
