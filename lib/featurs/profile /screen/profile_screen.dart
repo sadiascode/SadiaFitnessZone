@@ -6,6 +6,8 @@ import '../../../common/custom_color.dart';
 import '../widget/custom_edit.dart';
 import '../widget/custom_minibutton.dart';
 import '../widget/custom_new.dart';
+import 'privacy_policy.dart';
+import 'terms_conditions.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -248,9 +250,29 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 },
               ),
               const SizedBox(height: 10),
-              CustomNew(text: 'Privacy Policy'),
+              CustomNew(
+                text: 'Privacy Policy', 
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const PrivacyPolicy(),
+                    ),
+                  );
+                },
+              ),
               const SizedBox(height: 10),
-              CustomNew(text: 'Terms and Conditions'),
+              CustomNew(
+                text: 'Terms and Conditions', 
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const TermsConditions(),
+                    ),
+                  );
+                },
+              ),
               const SizedBox(height: 10),
 
               // Delete Account
