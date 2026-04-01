@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import '../../../common/app_shell.dart';
 import '../widget/custom_text.dart';
 
 class ChatScreen extends StatefulWidget {
@@ -19,8 +18,6 @@ class _ChatScreenState extends State<ChatScreen> {
 
   ];
 
-  bool _isLoadingHistory = false;
-  bool _showPlaceholderImage = false;
 
   void _sendMessage(String text) {
     if (text.trim().isEmpty) return;

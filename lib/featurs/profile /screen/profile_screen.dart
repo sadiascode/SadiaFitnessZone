@@ -391,7 +391,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                         context: context,
                         builder: (context) {
                           return Dialog(
-                            backgroundColor: const Color(0xffFFFAF7),
+                            backgroundColor:  const Color(0xFF1E1E24),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(20),
                             ),

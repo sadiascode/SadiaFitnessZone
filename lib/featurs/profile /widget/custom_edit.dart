@@ -103,6 +103,7 @@ class _CustomEditState extends State<CustomEdit> {
         )
             : TextField(
           controller: widget.controller,
+          style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
             hintText: widget.hintText,
             hintStyle: const TextStyle(

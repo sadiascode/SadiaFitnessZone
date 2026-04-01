@@ -13,7 +13,7 @@ class CustomTxt extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 15), // starts 20px from the left
+      padding: const EdgeInsets.only(left: 15),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

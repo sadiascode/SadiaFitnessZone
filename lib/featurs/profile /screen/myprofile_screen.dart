@@ -18,12 +18,9 @@ class _MyprofileScreenState extends State<MyprofileScreen> {
   String name = "Sadia Akter";
   String email = "sadia@email.com";
   String address = "Dhaka, Bangladesh";
-  String age = "25";
+  String age = "23";
   String health = "Good";
   String wakeup = "7:00 AM";
-  String breakfast = "9:00 AM";
-  String lunch = "2:00 PM";
-  String dinner = "9:00 PM";
 
   @override
   Widget build(BuildContext context) {

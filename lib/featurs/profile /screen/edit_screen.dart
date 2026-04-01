@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
+import 'package:image_picker/image_picker.dart';
+import 'package:todo/featurs/profile%20/screen/myprofile_screen.dart';
 import '../../../common/app_shell.dart';
 import '../../../common/custom_button.dart';
 import '../../../common/custom_color.dart';
@@ -13,7 +15,52 @@ class EditScreen extends StatefulWidget {
 }
 
 class _EditScreenState extends State<EditScreen> {
+  String? _selectedImagePath;
 
+  // Camera & Gallery Picker
+  Future<void> _pickImage() async {
+    final ImagePicker picker = ImagePicker();
+
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return SafeArea(
+          child: Wrap(
+            children: <Widget>[
+              ListTile(
+                leading: const Icon(Icons.photo_library),
+                title: const Text('Gallery'),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  final XFile? image =
+                  await picker.pickImage(source: ImageSource.gallery);
+                  if (image != null) {
+                    setState(() {
+                      _selectedImagePath = image.path;
+                    });
+                  }
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.camera_alt),
+                title: const Text('Camera'),
+                onTap: () async {
+                  Navigator.of(context).pop();
+                  final XFile? image =
+                  await picker.pickImage(source: ImageSource.camera);
+                  if (image != null) {
+                    setState(() {
+                      _selectedImagePath = image.path;
+                    });
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,8 +110,13 @@ class _EditScreenState extends State<EditScreen> {
                     ),
                     shape: BoxShape.circle,
                   ),
-                  child: const ClipOval(
-                    child: Icon(
+                  child: ClipOval(
+                    child: _selectedImagePath != null
+                        ? Image.file(
+                      File(_selectedImagePath!),
+                      fit: BoxFit.cover,
+                    )
+                        : const Icon(
                       Icons.person,
                       size: 80,
                       color: Colors.white,
@@ -74,9 +126,7 @@ class _EditScreenState extends State<EditScreen> {
               ),
               const SizedBox(height: 7),
               GestureDetector(
-                onTap: (){
-
-                },
+                onTap: _pickImage,
                 child: const Text(
                   'Change photo',
                   style: TextStyle(
@@ -88,7 +138,6 @@ class _EditScreenState extends State<EditScreen> {
                   ),
                 ),
               ),
-
               const SizedBox(height: 20),
               CustomEdit(
                 title: "Full Name",
@@ -107,7 +156,7 @@ class _EditScreenState extends State<EditScreen> {
               const SizedBox(height: 15),
               CustomEdit(
                 title: "Age",
-                hintText: "Enter your age here",
+                hintText: "Enter your Age",
               ),
               const SizedBox(height: 15),
               CustomEdit(
@@ -119,11 +168,17 @@ class _EditScreenState extends State<EditScreen> {
                 title: "Wakeup time",
                 hintText: "Enter your Wakeup time",
               ),
-              const SizedBox(height: 15),
               const SizedBox(height: 30),
               CustomButton(
-                text:  "Save",
-                onTap: () {} ,
+                text: "Save",
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const MyprofileScreen(),
+                    ),
+                  );
+                },
               ),
               const SizedBox(height: 120),
             ],
