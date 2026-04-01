@@ -16,6 +16,7 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  bool rememberMe = false;
   final email = TextEditingController();
   final password = TextEditingController();
   bool loading = false;
@@ -42,7 +43,6 @@ class _LoginScreenState extends State<LoginScreen> {
       );
 
       if (response.user != null) {
-        // Login successful, navigate to AppShell
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (_) => const AppShell()),
@@ -108,9 +108,23 @@ class _LoginScreenState extends State<LoginScreen> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Row(
-                  children: const [
-                    Text("Remember Me",
-                        style: TextStyle(fontSize: 14, color: Colors.black87)),
+                  children: [
+                    Checkbox(
+                      value: rememberMe,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          rememberMe = value ?? false;
+                        });
+                      },
+                      checkColor: Colors.white,
+                      activeColor: const Color(0xff3CB189),
+                      materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    const SizedBox(width: 4),
+                    const Text(
+                      "Remember Me",
+                      style: TextStyle(fontSize: 14, color: Colors.black87),
+                    ),
                   ],
                 ),
                 TextButton(
@@ -128,7 +142,6 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
             const SizedBox(height: 10),
-            // Sign In button with loading spinner
             CustomButton(
               text: "Sign in",
               onTap: (){

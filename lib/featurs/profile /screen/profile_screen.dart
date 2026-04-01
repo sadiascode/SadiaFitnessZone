@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:todo/featurs/auth/screen/login_screen.dart';
 import 'package:todo/featurs/profile%20/screen/edit_screen.dart';
 import 'package:todo/featurs/profile%20/screen/myprofile_screen.dart';
 import '../../../common/app_shell.dart';
@@ -445,7 +446,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (_) =>
-                                                    const AppShell(),
+                                                    const LoginScreen(),
                                               ),
                                               (route) => false,
                                             );

@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../../../common/custom_color.dart';
+
 class Routine {
   final String title;
   final String duration;
@@ -151,7 +153,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const SizedBox(height: 4),
+            const SizedBox(height: 3),
             const Text(
               "Ready to sweat?",
               style: TextStyle(
@@ -166,15 +168,19 @@ class _HomeScreenState extends State<HomeScreen> {
           height: 45,
           width: 45,
           decoration: BoxDecoration(
-            color: Colors.grey.shade200,
             shape: BoxShape.circle,
+            gradient: const LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: AppColors.primaryGradient,
+            ),
           ),
           child: const Icon(
             Icons.person,
             size: 28,
-            color: Colors.black,
+            color: Colors.white,
           ),
-        )
+        ),
       ],
     );
   }

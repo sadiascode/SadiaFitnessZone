@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ActionInputBarWidget extends StatefulWidget {
   const ActionInputBarWidget({super.key});
@@ -45,6 +45,8 @@ class _ActionInputBarWidgetState extends State<ActionInputBarWidget>
 
   @override
   Widget build(BuildContext context) {
+    final ImagePicker _picker = ImagePicker();
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
@@ -58,20 +60,28 @@ class _ActionInputBarWidgetState extends State<ActionInputBarWidget>
       ),
       child: Row(
         children: [
-          /// LEFT ICON
           if (_isRecording)
             const Icon(Icons.close, color: Colors.red)
           else
-            SvgPicture.asset(
-              'assets/camera.svg',
-              height: 32,
-              width: 32,
-              colorFilter: const ColorFilter.mode(Color(0xff86CC55), BlendMode.srcIn),
+            GestureDetector(
+              onTap: () async {
+                final XFile? image =
+                await _picker.pickImage(source: ImageSource.camera);
+
+                if (image != null) {
+                  // image use here
+                  print(image.path);
+                }
+              },
+              child: const Icon(
+                Icons.camera_alt,
+                size: 32,
+                color: Color(0xff86CC55),
+              ),
             ),
 
           const SizedBox(width: 12),
 
-          /// CENTER
           Expanded(
             child: _isRecording
                 ? Row(
@@ -100,7 +110,6 @@ class _ActionInputBarWidgetState extends State<ActionInputBarWidget>
 
           const SizedBox(width: 12),
 
-          /// MIC BUTTON
           InkWell(
             borderRadius: BorderRadius.circular(50),
             onTap: _toggleRecording,
@@ -125,11 +134,20 @@ class _ActionInputBarWidgetState extends State<ActionInputBarWidget>
 
           if (!_isRecording) ...[
             const SizedBox(width: 12),
-            SvgPicture.asset(
-              'assets/plus.svg',
-              height: 32,
-              width: 32,
-              colorFilter: const ColorFilter.mode(Color(0xff86CC55), BlendMode.srcIn),
+            GestureDetector(
+              onTap: () async {
+                final XFile? image =
+                await _picker.pickImage(source: ImageSource.gallery);
+
+                if (image != null) {
+                  print(image.path); // use image
+                }
+              },
+              child: const Icon(
+                Icons.photo_library,
+                size: 32,
+                color: Color(0xff86CC55),
+              ),
             ),
           ],
         ],
