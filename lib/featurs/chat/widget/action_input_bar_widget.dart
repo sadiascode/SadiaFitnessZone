@@ -1,8 +1,17 @@
+import 'dart:io';
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class ActionInputBarWidget extends StatefulWidget {
-  const ActionInputBarWidget({super.key});
+  final Function(File)? onImageCaptured;
+  final Function(Map<String, dynamic>)? onVoiceRecorded;
+
+  const ActionInputBarWidget({
+    super.key,
+    this.onImageCaptured,
+    this.onVoiceRecorded,
+  });
 
   @override
   State<ActionInputBarWidget> createState() => _ActionInputBarWidgetState();
@@ -12,8 +21,10 @@ class _ActionInputBarWidgetState extends State<ActionInputBarWidget>
     with SingleTickerProviderStateMixin {
   bool _isRecording = false;
   int _seconds = 0;
+  Timer? _timer;
 
   late AnimationController _pulseController;
+  final ImagePicker _picker = ImagePicker();
 
   @override
   void initState() {
@@ -27,12 +38,36 @@ class _ActionInputBarWidgetState extends State<ActionInputBarWidget>
   @override
   void dispose() {
     _pulseController.dispose();
+    _timer?.cancel();
     super.dispose();
   }
 
-  void _toggleRecording() {
+  void _startRecording() {
     setState(() {
-      _isRecording = !_isRecording;
+      _isRecording = true;
+      _seconds = 0;
+    });
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      setState(() {
+        _seconds++;
+      });
+    });
+  }
+
+  void _stopRecording() {
+    _timer?.cancel();
+    setState(() {
+      _isRecording = false;
+    });
+    if (widget.onVoiceRecorded != null && _seconds > 0) {
+      widget.onVoiceRecorded!({"duration": _seconds.toString()});
+    }
+  }
+
+  void _cancelRecording() {
+    _timer?.cancel();
+    setState(() {
+      _isRecording = false;
       _seconds = 0;
     });
   }
@@ -45,8 +80,6 @@ class _ActionInputBarWidgetState extends State<ActionInputBarWidget>
 
   @override
   Widget build(BuildContext context) {
-    final ImagePicker _picker = ImagePicker();
-
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: BoxDecoration(
@@ -58,100 +91,118 @@ class _ActionInputBarWidgetState extends State<ActionInputBarWidget>
         ),
         borderRadius: BorderRadius.circular(15),
       ),
-      child: Row(
-        children: [
-          if (_isRecording)
-            const Icon(Icons.close, color: Colors.red)
-          else
-            GestureDetector(
-              onTap: () async {
-                final XFile? image =
-                await _picker.pickImage(source: ImageSource.camera);
-
-                if (image != null) {
-                  // image use here
-                  print(image.path);
-                }
-              },
-              child: const Icon(
-                Icons.camera_alt,
-                size: 32,
-                color: Color(0xff86CC55),
-              ),
-            ),
-
-          const SizedBox(width: 12),
-
-          Expanded(
-            child: _isRecording
-                ? Row(
+      child: _isRecording
+          ? Row(
               children: [
-                FadeTransition(
-                  opacity: _pulseController,
-                  child: const Icon(
-                    Icons.circle,
-                    color: Colors.red,
-                    size: 12,
+                GestureDetector(
+                  onTap: _cancelRecording,
+                  child: const Icon(Icons.close, color: Colors.red),
+                ),
+                const SizedBox(width: 12),
+                Expanded(
+                  child: Row(
+                    children: [
+                      FadeTransition(
+                        opacity: _pulseController,
+                        child: const Icon(
+                          Icons.circle,
+                          color: Colors.red,
+                          size: 12,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        "RECORDING... ${_formatTime(_seconds)}",
+                        style: const TextStyle(
+                          color: Colors.red,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 13,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-                const SizedBox(width: 8),
-                Text(
-                  "RECORDING... ${_formatTime(_seconds)}",
-                  style: const TextStyle(
-                    color: Colors.red,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 13,
+                InkWell(
+                  borderRadius: BorderRadius.circular(50),
+                  onTap: _stopRecording,
+                  child: AnimatedScale(
+                    scale: 1.1,
+                    duration: const Duration(milliseconds: 200),
+                    child: Container(
+                      padding: const EdgeInsets.all(8),
+                      decoration: const BoxDecoration(
+                        color: Colors.red,
+                        shape: BoxShape.circle,
+                      ),
+                      child: const Icon(
+                        Icons.stop,
+                        color: Colors.white,
+                        size: 28,
+                      ),
+                    ),
                   ),
                 ),
               ],
             )
-                : const SizedBox.shrink(),
-          ),
-
-          const SizedBox(width: 12),
-
-          InkWell(
-            borderRadius: BorderRadius.circular(50),
-            onTap: _toggleRecording,
-            child: AnimatedScale(
-              scale: _isRecording ? 1.1 : 1.0,
-              duration: const Duration(milliseconds: 200),
-              child: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  color:
-                  _isRecording ? Colors.red : const Color(0xff86CC55),
-                  shape: BoxShape.circle,
+          : Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: GestureDetector(
+                      onTap: () async {
+                        final XFile? image =
+                            await _picker.pickImage(source: ImageSource.camera);
+                        if (image != null && widget.onImageCaptured != null) {
+                          widget.onImageCaptured!(File(image.path));
+                        }
+                      },
+                      child: const Icon(
+                        Icons.camera_alt,
+                        size: 32,
+                        color: Color(0xff86CC55),
+                      ),
+                    ),
+                  ),
                 ),
-                child: Icon(
-                  _isRecording ? Icons.stop : Icons.mic,
-                  color: Colors.white,
-                  size: 28,
+                InkWell(
+                  borderRadius: BorderRadius.circular(50),
+                  onTap: _startRecording,
+                  child: Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: const BoxDecoration(
+                      color: Color(0xff86CC55),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.mic,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                  ),
                 ),
-              ),
+                Expanded(
+                  child: Align(
+                    alignment: Alignment.centerRight,
+                    child: GestureDetector(
+                      onTap: () async {
+                        final XFile? image = await _picker.pickImage(
+                            source: ImageSource.gallery);
+                        if (image != null && widget.onImageCaptured != null) {
+                          widget.onImageCaptured!(File(image.path));
+                        }
+                      },
+                      child: const Icon(
+                        Icons.photo_library,
+                        size: 32,
+                        color: Color(0xff86CC55),
+                      ),
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ),
-
-          if (!_isRecording) ...[
-            const SizedBox(width: 12),
-            GestureDetector(
-              onTap: () async {
-                final XFile? image =
-                await _picker.pickImage(source: ImageSource.gallery);
-
-                if (image != null) {
-                  print(image.path); // use image
-                }
-              },
-              child: const Icon(
-                Icons.photo_library,
-                size: 32,
-                color: Color(0xff86CC55),
-              ),
-            ),
-          ],
-        ],
-      ),
     );
   }
 }

@@ -101,6 +101,12 @@ class _CustomTextState extends State<CustomText> {
           ),
           const SizedBox(height: 8),
           ActionInputBarWidget(
+            onImageCaptured: widget.onImageCaptured,
+            onVoiceRecorded: (voice) {
+              setState(() {
+                _stagedRecording = voice;
+              });
+            },
           ),
         ],
       ),
