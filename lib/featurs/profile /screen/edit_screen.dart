@@ -97,7 +97,6 @@ class _EditScreenState extends State<EditScreen> {
                 hintText: "Type your address here",
               ),
               const SizedBox(height: 20),
-              const SizedBox(height: 30),
               CustomEdit(
                 title: "Age",
                 hintText: "Type your age here",
