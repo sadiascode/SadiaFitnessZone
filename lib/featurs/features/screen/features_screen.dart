@@ -22,6 +22,7 @@ class FeaturesScreen extends StatefulWidget {
 }
 
 class _FeaturesScreenState extends State<FeaturesScreen> {
+
   final Color bgColor = const Color(0xFF121215);
   final Color cardColor = const Color(0xFF1E1E24);
   final Color primaryGreen = const Color(0xFF86CC55);
