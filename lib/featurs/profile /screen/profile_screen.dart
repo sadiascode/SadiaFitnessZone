@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:todo/featurs/profile%20/screen/edit_screen.dart';
+import 'package:todo/featurs/profile%20/screen/myprofile_screen.dart';
 import '../../../common/app_shell.dart';
 import '../../../common/custom_color.dart';
 import '../widget/custom_edit.dart';
@@ -79,14 +80,13 @@ class _ProfileScreenState extends State<ProfileScreen> {
             children: [
               const SizedBox(height: 20),
 
-              // ── My Profile Card ──────────────────────────────────────────
               InkWell(
                 borderRadius: BorderRadius.circular(screenWidth * 0.03),
                 onTap: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (_) => const EditScreen(),
+                      builder: (_) => const MyprofileScreen(),
                     ),
                   ).then((_) => _loadUserInfo()); // refresh on return
                 },
@@ -283,7 +283,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     context: context,
                     builder: (context) {
                       return Dialog(
-                        backgroundColor: const Color(0xffFFFAF7),
+                        backgroundColor:  const Color(0xFF1E1E24),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(20),
                         ),
@@ -334,7 +334,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                   ),
                                   const SizedBox(width: 8),
                                   TextButton(
-                                    onPressed: () {},
+                                    onPressed: () =>
+                                        Navigator.of(context).pop(),
                                     child: const Text(
                                       'Delete',
                                       style: TextStyle(
@@ -357,7 +358,6 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
               const SizedBox(height: 35),
 
-              // ── Sign Out Button ──────────────────────────────────────────
               SizedBox(
                 width: double.infinity,
                 height: 50,
