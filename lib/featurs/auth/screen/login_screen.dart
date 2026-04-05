@@ -38,7 +38,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       final response = await supabase.auth.signInWithPassword(
-        email: email.text,
+        email: email.text.trim(),
         password: password.text,
       );
 
@@ -62,10 +62,19 @@ class _LoginScreenState extends State<LoginScreen> {
         SnackBar(content: Text('Unexpected error: $e')),
       );
     } finally {
-      setState(() {
-        loading = false;
-      });
+      if (mounted) {
+        setState(() {
+          loading = false;
+        });
+      }
     }
+  }
+
+  @override
+  void dispose() {
+    email.dispose();
+    password.dispose();
+    super.dispose();
   }
 
   @override
@@ -142,15 +151,12 @@ class _LoginScreenState extends State<LoginScreen> {
               ],
             ),
             const SizedBox(height: 10),
-            CustomButton(
-              text: "Sign in",
-              onTap: (){
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const AppShell()),
-                );
-              },
-            ),
+            loading
+                ? const Center(child: CircularProgressIndicator())
+                : CustomButton(
+                    text: "Sign in",
+                    onTap: login,
+                  ),
             const SizedBox(height: 16),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,

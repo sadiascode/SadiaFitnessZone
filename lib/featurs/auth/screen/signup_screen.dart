@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../common/custom_button.dart';
 import '../widget/custom_screen.dart';
 import '../widget/custom_text_field.dart';
@@ -12,6 +13,68 @@ class SignupScreen extends StatefulWidget {
 }
 
 class _SignupScreenState extends State<SignupScreen> {
+  final fullNameController = TextEditingController();
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  bool loading = false;
+
+  final supabase = Supabase.instance.client;
+
+  Future<void> signUp() async {
+    if (fullNameController.text.isEmpty ||
+        emailController.text.isEmpty ||
+        passwordController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please fill all fields')),
+      );
+      return;
+    }
+
+    setState(() {
+      loading = true;
+    });
+
+    try {
+      final response = await supabase.auth.signUp(
+        email: emailController.text.trim(),
+        password: passwordController.text,
+        data: {'full_name': fullNameController.text.trim()},
+      );
+
+      if (response.user != null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Account created! Please log in.')),
+        );
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => const LoginScreen()),
+        );
+      }
+    } on AuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message)),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Unexpected error: $e')),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          loading = false;
+        });
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    fullNameController.dispose();
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -35,11 +98,11 @@ class _SignupScreenState extends State<SignupScreen> {
             ),
             const SizedBox(height: 20),
 
-
             const Text("Full Name"),
             const SizedBox(height: 6),
             CustomTextfield(
               hintText: "Enter your full name",
+              controller: fullNameController,
             ),
 
             const SizedBox(height: 12),
@@ -48,6 +111,7 @@ class _SignupScreenState extends State<SignupScreen> {
             const SizedBox(height: 6),
             CustomTextfield(
               hintText: "Enter your email",
+              controller: emailController,
             ),
 
             const SizedBox(height: 12),
@@ -57,18 +121,16 @@ class _SignupScreenState extends State<SignupScreen> {
             CustomTextfield(
               hintText: "Enter password",
               isPassword: true,
+              controller: passwordController,
             ),
 
             const SizedBox(height: 20),
-            CustomButton(
-              text: "Sign Up",
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (_) => const LoginScreen()),
-                );
-              },
-            ),
+            loading
+                ? const Center(child: CircularProgressIndicator())
+                : CustomButton(
+                    text: "Sign Up",
+                    onTap: signUp,
+                  ),
           ],
         ),
       ),

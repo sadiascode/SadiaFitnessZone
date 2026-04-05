@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:todo/featurs/auth/screen/verify_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:todo/featurs/auth/screen/login_screen.dart';
 import '../../../common/custom_button.dart';
 import '../widget/custom_screen.dart';
 import '../widget/custom_text_field.dart';
@@ -12,6 +13,55 @@ class ForgetScreen extends StatefulWidget {
 }
 
 class _ForgetScreenState extends State<ForgetScreen> {
+  final emailController = TextEditingController();
+  bool loading = false;
+
+  final supabase = Supabase.instance.client;
+
+  Future<void> sendResetEmail() async {
+    if (emailController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Please enter your email')),
+      );
+      return;
+    }
+
+    setState(() {
+      loading = true;
+    });
+
+    try {
+      await supabase.auth.resetPasswordForEmail(emailController.text.trim());
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password reset link sent to your email')),
+      );
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+      );
+    } on AuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text(e.message)),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Unexpected error: $e')),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          loading = false;
+        });
+      }
+    }
+  }
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,9 +73,8 @@ class _ForgetScreenState extends State<ForgetScreen> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 25),
-            Center(
-
+            const SizedBox(height: 25),
+            const Center(
               child: Text(
                 "Forgot Password?",
                 style: TextStyle(
@@ -34,10 +83,10 @@ class _ForgetScreenState extends State<ForgetScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 10),
+            const SizedBox(height: 10),
 
-            Padding(
-              padding: const EdgeInsets.only(left: 15.0),
+            const Padding(
+              padding: EdgeInsets.only(left: 15.0),
               child: Text(
                 "Enter your email and we will send you a \n                  verification code.",
                 style: TextStyle(
@@ -46,7 +95,7 @@ class _ForgetScreenState extends State<ForgetScreen> {
                 ),
               ),
             ),
-            SizedBox(height: 30),
+            const SizedBox(height: 30),
 
             Text(
               "Email",
@@ -56,14 +105,19 @@ class _ForgetScreenState extends State<ForgetScreen> {
                 color: Colors.grey[800],
               ),
             ),
-            SizedBox(height: 10),
-            CustomTextfield(hintText: "Enter your email address"),
+            const SizedBox(height: 10),
+            CustomTextfield(
+              hintText: "Enter your email address",
+              controller: emailController,
+            ),
 
-            SizedBox(height: 30),
-            CustomButton(text: "Send code", onTap: (){
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) =>  VerifyScreen()));
-            }),
+            const SizedBox(height: 30),
+            loading
+                ? const Center(child: CircularProgressIndicator())
+                : CustomButton(
+                    text: "Send code",
+                    onTap: sendResetEmail,
+                  ),
           ],
         ),
       ),
