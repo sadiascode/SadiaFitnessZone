@@ -51,6 +51,8 @@ class _HomeScreenState extends State<HomeScreen> {
   String? _userAvatar;
 
   int selectedCategory = 0;
+  int totalCaloriesBurned = 0;
+  final int dailyGoal = 3000;
   
   final List<CategoryData> categories = [
     CategoryData(
@@ -114,6 +116,22 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     super.initState();
     _loadUserInfo();
+    _calculateInitialCalories();
+  }
+
+  void _calculateInitialCalories() {
+    int initialCalories = 0;
+    for (var category in categories) {
+      for (var routine in category.routines) {
+        if (routine.isCompleted) {
+          int cal = int.tryParse(routine.calories.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
+          initialCalories += cal;
+        }
+      }
+    }
+    setState(() {
+      totalCaloriesBurned = initialCalories;
+    });
   }
 
   Future<void> _loadUserInfo() async {
@@ -233,6 +251,9 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildActivityRingCard() {
+    double progress = totalCaloriesBurned / dailyGoal;
+    if (progress > 1.0) progress = 1.0;
+
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
@@ -260,9 +281,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               const SizedBox(height: 8),
-              const Text(
-                "850 / 1000",
-                style: TextStyle(
+              Text(
+                "$totalCaloriesBurned / $dailyGoal",
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
@@ -286,7 +307,7 @@ class _HomeScreenState extends State<HomeScreen> {
               fit: StackFit.expand,
               children: [
                 CircularProgressIndicator(
-                  value: 0.85,
+                  value: progress,
                   strokeWidth: 8,
                   backgroundColor: Colors.white.withValues(alpha: 0.05),
                   valueColor: const AlwaysStoppedAnimation<Color>(Color(0xFF86CC55)),
@@ -448,6 +469,16 @@ class _HomeScreenState extends State<HomeScreen> {
       onTap: () {
         setState(() {
           routine.isCompleted = !routine.isCompleted;
+          
+          // Parse calories string like "120 kcal" into an integer
+          int cal = int.tryParse(routine.calories.replaceAll(RegExp(r'[^0-9]'), '')) ?? 0;
+          
+          if (routine.isCompleted) {
+            totalCaloriesBurned += cal;
+          } else {
+            totalCaloriesBurned -= cal;
+            if (totalCaloriesBurned < 0) totalCaloriesBurned = 0;
+          }
         });
       },
       child: AnimatedContainer(
