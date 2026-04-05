@@ -22,6 +22,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   final supabase = Supabase.instance.client;
   String _userName = '';
   String _userEmail = '';
+  String? _userAvatar;
   bool _isLoading = true;
 
   @override
@@ -38,13 +39,14 @@ class _ProfileScreenState extends State<ProfileScreen> {
 
       final data = await supabase
           .from('profiles')
-          .select('full_name')
+          .select('full_name, avatar_url')
           .eq('id', user.id)
           .maybeSingle();
 
       if (data != null && mounted) {
         setState(() {
           _userName = data['full_name'] ?? '';
+          _userAvatar = data['avatar_url'];
         });
       }
     } catch (_) {
@@ -119,18 +121,32 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       Container(
                         width: 54,
                         height: 54,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
-                          gradient: const LinearGradient(
+                          gradient: LinearGradient(
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
                             colors: AppColors.primaryGradient,
                           ),
                         ),
-                        child: const Icon(
-                          Icons.person,
-                          size: 28,
-                          color: Colors.white,
+                        child: ClipOval(
+                          child: _userAvatar != null && _userAvatar!.isNotEmpty
+                              ? Image.network(
+                                  _userAvatar!,
+                                  fit: BoxFit.cover,
+                                  loadingBuilder: (context, child, loadingProgress) {
+                                    if (loadingProgress == null) return child;
+                                    return const Center(
+                                        child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2));
+                                  },
+                                  errorBuilder: (context, error, stackTrace) =>
+                                      const Icon(Icons.person, size: 28, color: Colors.white),
+                                )
+                              : const Icon(
+                                  Icons.person,
+                                  size: 28,
+                                  color: Colors.white,
+                                ),
                         ),
                       ),
                       SizedBox(width: screenWidth * 0.04),
