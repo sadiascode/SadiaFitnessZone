@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../common/custom_color.dart';
 
 class Routine {
@@ -45,6 +45,10 @@ class _HomeScreenState extends State<HomeScreen> {
     begin: Alignment.topLeft,
     end: Alignment.bottomRight,
   );
+
+  final supabase = Supabase.instance.client;
+  String _userName = 'Hello 👋';
+  String? _userAvatar;
 
   int selectedCategory = 0;
   
@@ -107,6 +111,35 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   @override
+  void initState() {
+    super.initState();
+    _loadUserInfo();
+  }
+
+  Future<void> _loadUserInfo() async {
+    try {
+      final user = supabase.auth.currentUser;
+      if (user == null) return;
+      
+      final data = await supabase
+          .from('profiles')
+          .select('full_name, avatar_url')
+          .eq('id', user.id)
+          .maybeSingle();
+
+      if (data != null && mounted) {
+        setState(() {
+          final name = data['full_name'] ?? '';
+          _userName = name.isNotEmpty ? 'Hello, $name 👋' : 'Hello 👋';
+          _userAvatar = data['avatar_url'];
+        });
+      }
+    } catch (_) {
+      // Ignore errors when fetching just to avoid unnecessary popups on home
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgColor,
@@ -146,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Hello, Sadia 👋",
+              _userName,
               style: TextStyle(
                 color: Colors.white.withValues(alpha: 0.9),
                 fontSize: 16,
@@ -167,18 +200,32 @@ class _HomeScreenState extends State<HomeScreen> {
         Container(
           height: 45,
           width: 45,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             shape: BoxShape.circle,
-            gradient: const LinearGradient(
+            gradient: LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: AppColors.primaryGradient,
             ),
           ),
-          child: const Icon(
-            Icons.person,
-            size: 28,
-            color: Colors.white,
+          child: ClipOval(
+            child: _userAvatar != null && _userAvatar!.isNotEmpty
+                ? Image.network(
+                    _userAvatar!,
+                    fit: BoxFit.cover,
+                    loadingBuilder: (context, child, loadingProgress) {
+                      if (loadingProgress == null) return child;
+                      return const Center(
+                          child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2));
+                    },
+                    errorBuilder: (context, error, stackTrace) =>
+                        const Icon(Icons.person, size: 28, color: Colors.white),
+                  )
+                : const Icon(
+                    Icons.person,
+                    size: 28,
+                    color: Colors.white,
+                  ),
           ),
         ),
       ],
