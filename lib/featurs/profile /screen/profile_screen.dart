@@ -327,7 +327,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                 );
 
                                 // 2. Call RPC to delete from auth.users
-                                await supabase.rpc('delete_user');
+                                await supabase.rpc('delete_user', params: {});
 
                                 // 3. Sign out local session
                                 await supabase.auth.signOut();
@@ -426,11 +426,16 @@ class _ProfileScreenState extends State<ProfileScreen> {
                     const SizedBox(width: 8),
                     TextButton(
                       onPressed: () async {
+                        // 1. Close the dialog
                         Navigator.of(context).pop();
+                        
+                        // 2. Perform sign out
                         await supabase.auth.signOut();
-                        if (context.mounted) {
+                        
+                        // 3. Navigate back to login screen using the parent context
+                        if (mounted) {
                           Navigator.pushAndRemoveUntil(
-                            context,
+                            this.context,
                             MaterialPageRoute(
                               builder: (_) => const LoginScreen(),
                             ),
