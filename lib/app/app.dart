@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../common/app_shell.dart';
 import '../featurs/auth/screen/login_screen.dart';
 
 class Todo extends StatelessWidget {
@@ -6,11 +8,13 @@ class Todo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    // Check if there is an active session
+    final session = Supabase.instance.client.auth.currentSession;
 
+    return MaterialApp(
       title: "Top Talent Agency",
       debugShowCheckedModeBanner: false,
-      home: LoginScreen(),
+      home: session != null ? const AppShell() : const LoginScreen(),
     );
   }
 }

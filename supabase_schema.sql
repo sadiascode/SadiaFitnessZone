@@ -152,3 +152,14 @@ CREATE POLICY "Hosts can update their live rooms." ON public.live_rooms FOR UPDA
 -- Mall & Purchasing Policies
 CREATE POLICY "Anyone can view mall items." ON public.mall_items FOR SELECT USING (true);
 CREATE POLICY "Users can view their own purchases." ON public.user_purchases FOR SELECT USING (auth.uid() = user_id);
+
+-- ==============================================================================
+-- DELETE ACCOUNT RPC
+-- ==============================================================================
+-- A Security Definer function to allow users to delete their own account from auth.users
+CREATE OR REPLACE FUNCTION public.delete_user()
+RETURNS void AS $$
+BEGIN
+  DELETE FROM auth.users WHERE id = auth.uid();
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;

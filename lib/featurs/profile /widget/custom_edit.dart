@@ -8,6 +8,7 @@ class CustomEdit extends StatefulWidget {
   final List<String>? dropdownItems;
   final String? selectedValue;
   final Function(String?)? onDropdownChanged;
+  final bool obscureText;
 
   const CustomEdit({
     super.key,
@@ -18,6 +19,7 @@ class CustomEdit extends StatefulWidget {
     this.dropdownItems,
     this.selectedValue,
     this.onDropdownChanged,
+    this.obscureText = false,
   });
 
   @override
@@ -103,6 +105,7 @@ class _CustomEditState extends State<CustomEdit> {
         )
             : TextField(
           controller: widget.controller,
+          obscureText: widget.obscureText,
           style: const TextStyle(color: Colors.white),
           decoration: InputDecoration(
             hintText: widget.hintText,

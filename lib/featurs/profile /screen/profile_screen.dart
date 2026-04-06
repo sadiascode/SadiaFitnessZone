@@ -56,6 +56,407 @@ class _ProfileScreenState extends State<ProfileScreen> {
     }
   }
 
+  void _showChangePasswordDialog(BuildContext context, double screenWidth) {
+    final currentPasswordController = TextEditingController();
+    final newPasswordController = TextEditingController();
+    final retypePasswordController = TextEditingController();
+    bool isUpdating = false;
+    String errorMessage = '';
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return AlertDialog(
+              backgroundColor: const Color(0xFF1E1E24),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(18),
+              ),
+              title: const Text(
+                'Change Password',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              content: SizedBox(
+                width: screenWidth * 0.9,
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    CustomEdit(
+                      title: 'Current Password',
+                      hintText: '**************',
+                      controller: currentPasswordController,
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 10),
+                    CustomEdit(
+                      title: 'New Password',
+                      hintText: '**************',
+                      controller: newPasswordController,
+                      obscureText: true,
+                    ),
+                    const SizedBox(height: 10),
+                    CustomEdit(
+                      title: 'Retype New Password',
+                      hintText: '**************',
+                      controller: retypePasswordController,
+                      obscureText: true,
+                    ),
+                    if (errorMessage.isNotEmpty) ...[
+                      const SizedBox(height: 15),
+                      Text(
+                        errorMessage,
+                        style: const TextStyle(color: Colors.red, fontSize: 13),
+                        textAlign: TextAlign.center,
+                      ),
+                    ],
+                    const SizedBox(height: 15),
+                  ],
+                ),
+              ),
+              actions: [
+                if (isUpdating)
+                  const Padding(
+                    padding: EdgeInsets.only(bottom: 10, right: 20),
+                    child: CircularProgressIndicator(color: Color(0xff86CC55)),
+                  )
+                else
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      CustomMinibutton(
+                        text: 'Update',
+                        textcolor: Colors.white,
+                        onTap: () async {
+                          final currentPassword = currentPasswordController.text.trim();
+                          final newPassword = newPasswordController.text.trim();
+                          final retypePassword = retypePasswordController.text.trim();
+
+                          if (currentPassword.isEmpty || newPassword.isEmpty || retypePassword.isEmpty) {
+                            setState(() {
+                              errorMessage = 'Please fill all fields.';
+                            });
+                            return;
+                          }
+
+                          if (newPassword != retypePassword) {
+                            setState(() {
+                              errorMessage = 'New passwords do not match.';
+                            });
+                            return;
+                          }
+                          
+                          if (newPassword.length < 6) {
+                            setState(() {
+                              errorMessage = 'New password must be at least 6 characters.';
+                            });
+                            return;
+                          }
+
+                          setState(() {
+                            isUpdating = true;
+                            errorMessage = '';
+                          });
+
+                          try {
+                            final user = supabase.auth.currentUser;
+                            if (user == null || user.email == null) {
+                              throw 'User is not logged in.';
+                            }
+                            
+                            // Verify current password
+                            await supabase.auth.signInWithPassword(
+                              email: user.email!,
+                              password: currentPassword,
+                            );
+
+                            // Change password
+                            await supabase.auth.updateUser(
+                              UserAttributes(password: newPassword),
+                            );
+
+                            if (context.mounted) {
+                              Navigator.of(context).pop();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text('Password updated successfully!'),
+                                  backgroundColor: Colors.green,
+                                ),
+                              );
+                            }
+                          } catch (e) {
+                            setState(() {
+                              isUpdating = false;
+                              if (e is AuthException) {
+                                errorMessage = e.message;
+                              } else {
+                                errorMessage = e.toString();
+                              }
+                            });
+                          }
+                        },
+                        backgroundColor: const Color(0xff86CC55),
+                      ),
+                      const SizedBox(width: 7),
+                      CustomMinibutton(
+                        text: 'Cancel',
+                        textcolor: const Color(0xff86CC55),
+                        onTap: () => Navigator.of(context).pop(),
+                        backgroundColor: const Color(0xFF1E1E24),
+                      ),
+                    ],
+                  ),
+              ],
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showDeleteAccountDialog(BuildContext context) {
+    final currentPasswordController = TextEditingController();
+    bool isDeleting = false;
+    String errorMessage = '';
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return StatefulBuilder(
+          builder: (context, setState) {
+            return Dialog(
+              backgroundColor: const Color(0xFF1E1E24),
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(20),
+              ),
+              insetPadding: const EdgeInsets.symmetric(horizontal: 35),
+              child: Padding(
+                padding: const EdgeInsets.all(24),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Confirm Delete Account',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+                    const Text(
+                      'Are you sure you want to delete your account? This action cannot be undone.',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        height: 1.5,
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    CustomEdit(
+                      title: 'Current Password',
+                      hintText: '**************',
+                      controller: currentPasswordController,
+                      obscureText: true,
+                    ),
+                    if (errorMessage.isNotEmpty) ...[
+                      const SizedBox(height: 12),
+                      Text(
+                        errorMessage,
+                        style: const TextStyle(color: Colors.red, fontSize: 13),
+                      ),
+                    ],
+                    const SizedBox(height: 20),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        if (isDeleting)
+                          const Padding(
+                            padding: EdgeInsets.only(right: 20),
+                            child: SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                  color: Colors.red, strokeWidth: 2),
+                            ),
+                          )
+                        else ...[
+                          TextButton(
+                            onPressed: () => Navigator.of(context).pop(),
+                            child: const Text(
+                              'Cancel',
+                              style: TextStyle(
+                                color: Color(0xff86CC55),
+                                fontSize: 15,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 8),
+                          TextButton(
+                            onPressed: () async {
+                              final currentPassword =
+                                  currentPasswordController.text.trim();
+
+                              if (currentPassword.isEmpty) {
+                                setState(() {
+                                  errorMessage =
+                                      'Please enter your current password.';
+                                });
+                                return;
+                              }
+
+                              setState(() {
+                                isDeleting = true;
+                                errorMessage = '';
+                              });
+
+                              try {
+                                final user = supabase.auth.currentUser;
+                                if (user == null || user.email == null) {
+                                  throw 'User is not logged in.';
+                                }
+
+                                // 1. Verify password
+                                await supabase.auth.signInWithPassword(
+                                  email: user.email!,
+                                  password: currentPassword,
+                                );
+
+                                // 2. Call RPC to delete from auth.users
+                                await supabase.rpc('delete_user');
+
+                                // 3. Sign out local session
+                                await supabase.auth.signOut();
+
+                                if (context.mounted) {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const LoginScreen(),
+                                    ),
+                                    (route) => false,
+                                  );
+                                }
+                              } catch (e) {
+                                setState(() {
+                                  isDeleting = false;
+                                  if (e is AuthException) {
+                                    errorMessage = e.message;
+                                  } else if (e is PostgrestException) {
+                                    errorMessage = 'Database Error: ${e.message}';
+                                  } else {
+                                    errorMessage = e.toString();
+                                  }
+                                });
+                              }
+                            },
+                            child: const Text(
+                              'Delete',
+                              style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 15,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  void _showSignOutDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          backgroundColor: const Color(0xFF1E1E24),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          insetPadding: const EdgeInsets.symmetric(horizontal: 35),
+          child: Padding(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Sign Out',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                const Text(
+                  'Are you sure you want to sign out?',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 15,
+                    height: 1.4,
+                  ),
+                ),
+                const SizedBox(height: 24),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child: const Text(
+                        'Cancel',
+                        style: TextStyle(
+                          color: Color(0xff86CC55),
+                          fontSize: 15,
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    TextButton(
+                      onPressed: () async {
+                        Navigator.of(context).pop();
+                        await supabase.auth.signOut();
+                        if (context.mounted) {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const LoginScreen(),
+                            ),
+                            (route) => false,
+                          );
+                        }
+                      },
+                      child: const Text(
+                        'Sign Out',
+                        style: TextStyle(
+                          color: Colors.red,
+                          fontSize: 15,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
@@ -203,67 +604,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               CustomNew(
                 text: 'Change Password',
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        backgroundColor: const Color(0xFF1E1E24),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(18),
-                        ),
-                        title: const Text(
-                          'Change Password',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        content: SizedBox(
-                          width: screenWidth * 0.9,
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              CustomEdit(
-                                title: 'Current Password',
-                                hintText: '**************',
-                              ),
-                              const SizedBox(height: 10),
-                              CustomEdit(
-                                title: 'New Password',
-                                hintText: '**************',
-                              ),
-                              const SizedBox(height: 10),
-                              CustomEdit(
-                                title: 'Retype New Password',
-                                hintText: '**************',
-                              ),
-                              const SizedBox(height: 15),
-                            ],
-                          ),
-                        ),
-                        actions: [
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              CustomMinibutton(
-                                text: 'Update',
-                                textcolor: Colors.white,
-                                onTap: () => Navigator.of(context).pop(),
-                                backgroundColor: const Color(0xff86CC55),
-                              ),
-                              const SizedBox(width: 7),
-                              CustomMinibutton(
-                                text: 'Cancel',
-                                textcolor: const Color(0xff86CC55),
-                                onTap: () => Navigator.of(context).pop(),
-                                backgroundColor: const Color(0xFF1E1E24),
-                              ),
-                            ],
-                          ),
-                        ],
-                      );
-                    },
-                  );
+                  _showChangePasswordDialog(context, screenWidth);
                 },
               ),
               const SizedBox(height: 10),
@@ -296,80 +637,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
               CustomNew(
                 text: 'Delete Account',
                 onTap: () {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return Dialog(
-                        backgroundColor:  const Color(0xFF1E1E24),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                        ),
-                        insetPadding:
-                            const EdgeInsets.symmetric(horizontal: 35),
-                        child: Padding(
-                          padding: const EdgeInsets.all(24),
-                          child: Column(
-                            mainAxisSize: MainAxisSize.min,
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Confirm Delete Account',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                              const SizedBox(height: 12),
-                              const Text(
-                                'Are you sure you want to delete your account? This action cannot be undone.',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 14,
-                                  height: 1.5,
-                                ),
-                              ),
-                              const SizedBox(height: 16),
-                              CustomEdit(
-                                title: 'Current Password',
-                                hintText: '**************',
-                              ),
-                              const SizedBox(height: 20),
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
-                                    child: const Text(
-                                      'Cancel',
-                                      style: TextStyle(
-                                        color: Color(0xff86CC55),
-                                        fontSize: 15,
-                                      ),
-                                    ),
-                                  ),
-                                  const SizedBox(width: 8),
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.of(context).pop(),
-                                    child: const Text(
-                                      'Delete',
-                                      style: TextStyle(
-                                        color: Colors.red,
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
-                        ),
-                      );
-                    },
-                  );
+                  _showDeleteAccountDialog(context);
                 },
               ),
 
@@ -404,87 +672,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       ),
                     ),
                     onPressed: () {
-                      showDialog(
-                        context: context,
-                        builder: (context) {
-                          return Dialog(
-                            backgroundColor:  const Color(0xFF1E1E24),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            insetPadding:
-                                const EdgeInsets.symmetric(horizontal: 35),
-                            child: Padding(
-                              padding: const EdgeInsets.all(24),
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  const Text(
-                                    'Sign Out',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  const Text(
-                                    'Are you sure you want to sign out?',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 15,
-                                      height: 1.4,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 24),
-                                  Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.of(context).pop(),
-                                        child: const Text(
-                                          'Cancel',
-                                          style: TextStyle(
-                                            color: Color(0xff86CC55),
-                                            fontSize: 15,
-                                          ),
-                                        ),
-                                      ),
-                                      const SizedBox(width: 8),
-                                      TextButton(
-                                        onPressed: () async {
-                                          Navigator.of(context).pop();
-                                          await supabase.auth.signOut();
-                                          if (context.mounted) {
-                                            Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MaterialPageRoute(
-                                                builder: (_) =>
-                                                    const LoginScreen(),
-                                              ),
-                                              (route) => false,
-                                            );
-                                          }
-                                        },
-                                        child: const Text(
-                                          'Sign Out',
-                                          style: TextStyle(
-                                            color: Colors.red,
-                                            fontSize: 15,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ],
-                              ),
-                            ),
-                          );
-                        },
-                      );
+                      _showSignOutDialog(context);
                     },
                     icon: const Icon(Icons.logout, color: Colors.white),
                     label: const Text(
