@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:todo/featurs/auth/screen/login_screen.dart';
+import 'package:todo/featurs/auth/screen/verify_screen.dart';
 import '../../../common/custom_button.dart';
 import '../widget/custom_screen.dart';
 import '../widget/custom_text_field.dart';
@@ -33,12 +33,16 @@ class _ForgetScreenState extends State<ForgetScreen> {
     try {
       await supabase.auth.resetPasswordForEmail(emailController.text.trim());
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password reset link sent to your email')),
+        const SnackBar(content: Text('Verification code sent to your email')),
       );
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (_) => const LoginScreen()),
-      );
+      if (mounted) {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => VerifyScreen(email: emailController.text.trim()),
+          ),
+        );
+      }
     } on AuthException catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text(e.message)),
