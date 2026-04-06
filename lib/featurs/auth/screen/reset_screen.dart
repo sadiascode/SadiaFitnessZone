@@ -19,24 +19,35 @@ class _ResetScreenState extends State<ResetScreen> {
   final supabase = Supabase.instance.client;
 
   Future<void> updatePassword() async {
-    if (passwordController.text.isEmpty ||
-        confirmPasswordController.text.isEmpty) {
+    final password = passwordController.text.trim();
+    final confirmPassword = confirmPasswordController.text.trim();
+
+    if (password.isEmpty || confirmPassword.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please fill all fields')),
+        const SnackBar(
+          content: Text('Please fill all fields'),
+          backgroundColor: Colors.redAccent,
+        ),
       );
       return;
     }
 
-    if (passwordController.text != confirmPasswordController.text) {
+    if (password != confirmPassword) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Passwords do not match')),
+        const SnackBar(
+          content: Text('Passwords do not match'),
+          backgroundColor: Colors.redAccent,
+        ),
       );
       return;
     }
 
-    if (passwordController.text.length < 6) {
+    if (password.length < 6) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Password must be at least 6 characters')),
+        const SnackBar(
+          content: Text('Password must be at least 6 characters'),
+          backgroundColor: Colors.redAccent,
+        ),
       );
       return;
     }
@@ -47,12 +58,18 @@ class _ResetScreenState extends State<ResetScreen> {
 
     try {
       await supabase.auth.updateUser(
-        UserAttributes(password: passwordController.text.trim()),
+        UserAttributes(password: password),
       );
+
+      // Sign out to clear the recovery session and force fresh login
+      await supabase.auth.signOut();
 
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Password reset successfully')),
+          const SnackBar(
+            content: Text('Password reset successfully. Please login with your new password.'),
+            backgroundColor: Color(0xff3CB189),
+          ),
         );
         Navigator.pushAndRemoveUntil(
           context,
@@ -61,13 +78,23 @@ class _ResetScreenState extends State<ResetScreen> {
         );
       }
     } on AuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message)),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Unexpected error: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Unexpected error: $e'),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
     } finally {
       if (mounted) {
         setState(() {

@@ -19,9 +19,13 @@ class _ForgetScreenState extends State<ForgetScreen> {
   final supabase = Supabase.instance.client;
 
   Future<void> sendResetEmail() async {
-    if (emailController.text.isEmpty) {
+    final email = emailController.text.trim();
+    if (email.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your email')),
+        const SnackBar(
+          content: Text('Please enter your email'),
+          backgroundColor: Colors.redAccent,
+        ),
       );
       return;
     }
@@ -31,26 +35,39 @@ class _ForgetScreenState extends State<ForgetScreen> {
     });
 
     try {
-      await supabase.auth.resetPasswordForEmail(emailController.text.trim());
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Verification code sent to your email')),
-      );
+      await supabase.auth.resetPasswordForEmail(email);
       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Verification code sent to your email'),
+            backgroundColor: Color(0xff3CB189),
+          ),
+        );
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => VerifyScreen(email: emailController.text.trim()),
+            builder: (_) => VerifyScreen(email: email),
           ),
         );
       }
     } on AuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message)),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Unexpected error: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Unexpected error: $e'),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
     } finally {
       if (mounted) {
         setState(() {

@@ -20,9 +20,13 @@ class _VerifyScreenState extends State<VerifyScreen> {
   final supabase = Supabase.instance.client;
 
   Future<void> verifyOTP() async {
-    if (otpController.text.length < 6) {
+    final token = otpController.text.trim();
+    if (token.length < 6) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter a valid 6-digit code')),
+        const SnackBar(
+          content: Text('Please enter a valid 6-digit code'),
+          backgroundColor: Colors.redAccent,
+        ),
       );
       return;
     }
@@ -34,29 +38,68 @@ class _VerifyScreenState extends State<VerifyScreen> {
     try {
       await supabase.auth.verifyOTP(
         email: widget.email,
-        token: otpController.text.trim(),
+        token: token,
         type: OtpType.recovery,
       );
 
       if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Email verified successfully'),
+            backgroundColor: Color(0xff3CB189),
+          ),
+        );
         Navigator.push(
           context,
           MaterialPageRoute(builder: (_) => const ResetScreen()),
         );
       }
     } on AuthException catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(e.message)),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Unexpected error: $e')),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Unexpected error: $e'),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
+      }
     } finally {
       if (mounted) {
         setState(() {
           loading = false;
         });
+      }
+    }
+  }
+
+  Future<void> resendOTP() async {
+    try {
+      await supabase.auth.resetPasswordForEmail(widget.email);
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('OTP resent successfully'),
+            backgroundColor: Color(0xff3CB189),
+          ),
+        );
+      }
+    } on AuthException catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message),
+            backgroundColor: Colors.redAccent,
+          ),
+        );
       }
     }
   }
@@ -123,13 +166,7 @@ class _VerifyScreenState extends State<VerifyScreen> {
             Align(
               alignment: Alignment.centerRight,
               child: InkWell(
-                onTap: () {
-                  // Resend logic could be implemented here as well
-                  supabase.auth.resetPasswordForEmail(widget.email);
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text('OTP resent successfully')),
-                  );
-                },
+                onTap: resendOTP,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
