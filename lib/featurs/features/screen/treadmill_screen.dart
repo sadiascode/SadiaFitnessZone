@@ -9,7 +9,6 @@ class TreadmillScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Color bgColor = const Color(0xFF121215);
     final Color primaryGreen = const Color(0xFF86CC55);
 
     return  SubPageScaffold(

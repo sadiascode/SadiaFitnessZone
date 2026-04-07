@@ -47,9 +47,9 @@ class CableScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
-                color: primaryGreen.withOpacity(0.2),
+                color: primaryGreen.withValues(alpha: 0.2),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: primaryGreen.withOpacity(0.5)),
+                border: Border.all(color: primaryGreen.withValues(alpha: 0.5)),
               ),
               child: Text(
                 item.category,
