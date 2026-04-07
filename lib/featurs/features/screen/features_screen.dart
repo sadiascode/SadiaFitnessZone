@@ -40,7 +40,7 @@ class _FeaturesScreenState extends State<FeaturesScreen> {
       name: "Treadmill",
       category: "Cardio",
       description: "A motorized running belt used for walking, jogging, or high-intensity sprints. It builds incredible cardiovascular endurance, burns calories extremely fast, and is perfect for pre-workout warm-ups.",
-      imageUrl: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1470&auto=format&fit=crop",
+      imageUrl: "https://images.pexels.com/photos/3757938/pexels-photo-3757938.jpeg?auto=compress&cs=tinysrgb&w=1470&q=80",
     ),
     Equipment(
       name: "Dumbbells",
