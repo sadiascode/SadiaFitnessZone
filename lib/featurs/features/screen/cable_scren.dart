@@ -1,20 +1,18 @@
 import 'package:flutter/material.dart';
-import '../../../common/app_shell.dart';
-import 'features_screen.dart';
+import 'main.dart'; // Equipment class এর জন্য import
 
-class SmithScreen extends StatelessWidget {
+class CableStationScreen extends StatelessWidget {
   final Equipment item;
 
-  const SmithScreen({super.key, required this.item});
+  const CableStationScreen({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
     final Color bgColor = const Color(0xFF121215);
     final Color primaryGreen = const Color(0xFF86CC55);
 
-    return  SubPageScaffold(
-      backgroundColor: const Color(0xFF121215),
-      parentTabIndex: 1,
+    return Scaffold(
+      backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: bgColor,
         elevation: 0,
@@ -81,9 +79,9 @@ class SmithScreen extends StatelessWidget {
             Wrap(
               spacing: 10,
               children: const [
-                Chip(label: Text("Glutes")),
-                Chip(label: Text("Quads")),
-                Chip(label: Text("Legs")),
+                Chip(label: Text("Chest")),
+                Chip(label: Text("Back")),
+                Chip(label: Text("Triceps")),
               ],
             ),
             const SizedBox(height: 20),
@@ -95,9 +93,9 @@ class SmithScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             const Text(
-              "1. Position yourself under the Smith Machine bar.\n"
-                  "2. Adjust the safety stops and select desired weight.\n"
-                  "3. Perform squats, lunges, or bench presses while keeping control.",
+              "1. Adjust the pulleys to desired height.\n"
+                  "2. Select appropriate weight.\n"
+                  "3. Perform chest flies, lat pulldowns, or tricep pushdowns with controlled movements.",
               style: TextStyle(color: Colors.white70, fontSize: 14),
             ),
             const SizedBox(height: 20),
@@ -109,13 +107,33 @@ class SmithScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             const Text(
-              "• Always use safety stops to prevent injury.\n"
-                  "• Keep your core engaged during movements.\n"
-                  "• Move in a slow, controlled manner.",
+              "• Keep movements slow and controlled.\n"
+                  "• Focus on mind-muscle connection.\n"
+                  "• Avoid shrugging shoulders during exercises.",
               style: TextStyle(color: Colors.white70, fontSize: 14),
             ),
             const SizedBox(height: 100), // bottom padding for button
           ],
+        ),
+      ),
+
+      // Bottom button
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(16),
+        color: const Color(0xFF1E1E24),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primaryGreen,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            padding: const EdgeInsets.symmetric(vertical: 16),
+          ),
+          onPressed: () {
+            // Start workout action
+          },
+          child: const Text(
+            "Start Workout",
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
+          ),
         ),
       ),
     );

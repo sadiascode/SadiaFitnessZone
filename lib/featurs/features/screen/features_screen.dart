@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:todo/featurs/features/screen/dumbbells_screen.dart';
+import 'package:todo/featurs/features/screen/smith_screen.dart';
 import 'package:todo/featurs/features/screen/treadmill_screen.dart';
+import 'package:todo/featurs/features/screen/yoga_screen.dart';
 
 class Equipment {
   final String name;
@@ -65,18 +67,42 @@ class _FeaturesScreenState extends State<FeaturesScreen> {
       category: "Powerlifting",
       description: "A guided barbell fixed within steel rails. Excellent for safely performing heavy barbell squats, bench presses, and lunges without needing a spotter. Highly effective for isolating the glutes and quads.",
       imageUrl: "https://images.unsplash.com/photo-1605296867304-46d5465a13f1?q=80&w=1470&auto=format&fit=crop",
+        onTap: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const  SmithScreen(item: item),
+            ),
+          );
+        }
     ),
     Equipment(
       name: "Yoga Mat",
       category: "Flexibility",
       description: "A dedicated cushioned space for bodyweight and stretching exercises. Essential for practicing Yoga poses, doing Pilates routines, improving joint mobility, and enhancing mental mindfulness.",
       imageUrl: "https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?q=80&w=1520&auto=format&fit=crop",
+        onTap: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const  YogaMatScreen(item: item),
+            ),
+          );
+        }
     ),
     Equipment(
       name: "Cable Station",
       category: "Isolation",
       description: "An adjustable dual-pulley system providing constant weight tension from all angles. Perfect for chest flies, lat pulldowns, and tricep pushdowns to sculpt and tone specific upper-body muscle groups.",
       imageUrl: "https://images.unsplash.com/photo-1581009146145-b5ef050c2e1e?q=80&w=1470&auto=format&fit=crop",
+        onTap: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const  YogaMatScreen(item: item),
+            ),
+          );
+        }
     ),
     Equipment(
       name: "Kettlebells",

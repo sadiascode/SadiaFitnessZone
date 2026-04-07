@@ -2,10 +2,11 @@ import 'package:flutter/material.dart';
 import '../../../common/app_shell.dart';
 import 'features_screen.dart';
 
-class SmithScreen extends StatelessWidget {
+
+class YogaMatScreen extends StatelessWidget {
   final Equipment item;
 
-  const SmithScreen({super.key, required this.item});
+  const YogaMatScreen({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
@@ -81,9 +82,9 @@ class SmithScreen extends StatelessWidget {
             Wrap(
               spacing: 10,
               children: const [
-                Chip(label: Text("Glutes")),
-                Chip(label: Text("Quads")),
-                Chip(label: Text("Legs")),
+                Chip(label: Text("Core")),
+                Chip(label: Text("Flexibility")),
+                Chip(label: Text("Balance")),
               ],
             ),
             const SizedBox(height: 20),
@@ -95,9 +96,9 @@ class SmithScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             const Text(
-              "1. Position yourself under the Smith Machine bar.\n"
-                  "2. Adjust the safety stops and select desired weight.\n"
-                  "3. Perform squats, lunges, or bench presses while keeping control.",
+              "1. Unroll your yoga mat on a flat surface.\n"
+                  "2. Practice your yoga poses, stretches, or Pilates routines.\n"
+                  "3. Focus on breathing, posture, and alignment for effectiveness.",
               style: TextStyle(color: Colors.white70, fontSize: 14),
             ),
             const SizedBox(height: 20),
@@ -109,9 +110,9 @@ class SmithScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             const Text(
-              "• Always use safety stops to prevent injury.\n"
-                  "• Keep your core engaged during movements.\n"
-                  "• Move in a slow, controlled manner.",
+              "• Choose a quiet space for concentration.\n"
+                  "• Keep your mat clean and cushioned.\n"
+                  "• Move slowly and mindfully to avoid injury.",
               style: TextStyle(color: Colors.white70, fontSize: 14),
             ),
             const SizedBox(height: 100), // bottom padding for button
