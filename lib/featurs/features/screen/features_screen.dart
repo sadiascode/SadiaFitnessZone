@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/featurs/features/screen/treadmill_screen.dart';
 
 class Equipment {
   final String name;
@@ -128,7 +129,17 @@ class _FeaturesScreenState extends State<FeaturesScreen> {
   }
 
   Widget _buildEquipmentCard(Equipment item) {
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        // এখানে প্রতিটা item আলাদা data নিয়ে next screen এ যাবে
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => TreadmillScreen(item: item),
+          ),
+        );
+      },
+        child: Container(
       margin: const EdgeInsets.only(bottom: 20),
       height: 260,
       decoration: BoxDecoration(
@@ -203,6 +214,7 @@ class _FeaturesScreenState extends State<FeaturesScreen> {
           ],
         ),
       ),
+        ),
     );
   }
 }
