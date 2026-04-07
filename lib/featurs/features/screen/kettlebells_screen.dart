@@ -20,17 +20,26 @@ class KettlebellsScreen extends StatelessWidget {
         backgroundColor: bgColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () => Navigator.pop(context),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios, color: Color(0xff86CC55), size: 18),
         ),
-        title: Text(item.name),
+        title: Text(
+          item.name,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image
+
             Container(
               height: 200,
               width: double.infinity,
@@ -44,7 +53,6 @@ class KettlebellsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 16),
 
-            // Category badge
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               decoration: BoxDecoration(
@@ -62,7 +70,6 @@ class KettlebellsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 12),
 
-            // Description
             Text(
               item.description,
               style: const TextStyle(
@@ -73,7 +80,6 @@ class KettlebellsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // Target muscles
             const Text(
               "Target Muscles",
               style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
@@ -81,15 +87,57 @@ class KettlebellsScreen extends StatelessWidget {
             const SizedBox(height: 8),
             Wrap(
               spacing: 10,
-              children: const [
-                Chip(label: Text("Core")),
-                Chip(label: Text("Glutes")),
-                Chip(label: Text("Hips")),
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: primaryGreen.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: primaryGreen.withOpacity(0.5)),
+                  ),
+                  child: Text(
+                    "Core",
+                    style: TextStyle(
+                      color: primaryGreen,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: primaryGreen.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: primaryGreen.withOpacity(0.5)),
+                  ),
+                  child: Text(
+                    "Glutes",
+                    style: TextStyle(
+                      color: primaryGreen,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: primaryGreen.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: primaryGreen.withOpacity(0.5)),
+                  ),
+                  child: Text(
+                    "Hips",
+                    style: TextStyle(
+                      color: primaryGreen,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
               ],
             ),
+
             const SizedBox(height: 20),
 
-            // How to Use
             const Text(
               "How to Use",
               style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
@@ -103,7 +151,6 @@ class KettlebellsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // Tips
             const Text(
               "Tips",
               style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
@@ -115,7 +162,7 @@ class KettlebellsScreen extends StatelessWidget {
                   "• Avoid jerky movements to prevent injury.",
               style: TextStyle(color: Colors.white70, fontSize: 14),
             ),
-            const SizedBox(height: 100), // bottom padding for button
+            const SizedBox(height: 100),
           ],
         ),
       ),
