@@ -161,7 +161,7 @@ class SmithScreen extends StatelessWidget {
                   "• Move in a slow, controlled manner.",
               style: TextStyle(color: Colors.white70, fontSize: 14),
             ),
-            const SizedBox(height: 100), // bottom padding for button
+            const SizedBox(height: 100),
           ],
         ),
       ),
