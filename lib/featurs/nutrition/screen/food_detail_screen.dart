@@ -145,7 +145,7 @@ final Map<String, FoodDetailData> _foodDetails = {
     ],
   ),
 
-  // ── Weight Gain Foods ──
+
   "Peanut Butter Smoothie": const FoodDetailData(
     description:
         "A colossal calorie bomb that's perfect for bulking! Blended with ripe "
@@ -361,7 +361,6 @@ class FoodDetailScreen extends StatelessWidget {
                   ),
                 ),
 
-                /// Food name on the image
                 Positioned(
                   bottom: 20,
                   left: 20,
@@ -384,13 +383,11 @@ class FoodDetailScreen extends StatelessWidget {
               ],
             ),
 
-            /// ── BODY CONTENT ──
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 10, 20, 120),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  /// ── CALORIE & MACRO CHIPS ──
                   Row(
                     children: [
                       _infoChip(
@@ -413,7 +410,6 @@ class FoodDetailScreen extends StatelessWidget {
 
                   const SizedBox(height: 24),
 
-                  /// ── DESCRIPTION ──
                   _sectionTitle("About"),
                   const SizedBox(height: 10),
                   Text(
@@ -427,7 +423,6 @@ class FoodDetailScreen extends StatelessWidget {
 
                   const SizedBox(height: 28),
 
-                  /// ── INGREDIENTS ──
                   if (detail != null && detail.ingredients.isNotEmpty) ...[
                     _sectionTitle("Ingredients"),
                     const SizedBox(height: 12),
@@ -454,7 +449,7 @@ class FoodDetailScreen extends StatelessWidget {
                     const SizedBox(height: 28),
                   ],
 
-                  /// ── BENEFITS ──
+
                   if (detail != null && detail.benefits.isNotEmpty) ...[
                     _sectionTitle("Benefits"),
                     const SizedBox(height: 12),
@@ -464,7 +459,7 @@ class FoodDetailScreen extends StatelessWidget {
                     const SizedBox(height: 28),
                   ],
 
-                  /// ── BEST TIME ──
+
                   if (detail != null) ...[
                     _sectionTitle("Best Time to Eat"),
                     const SizedBox(height: 12),
@@ -510,7 +505,7 @@ class FoodDetailScreen extends StatelessWidget {
     );
   }
 
-  // ── Helper Widgets ──
+
 
   Widget _sectionTitle(String title) {
     return Text(
