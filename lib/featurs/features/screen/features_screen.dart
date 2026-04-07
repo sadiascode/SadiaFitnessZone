@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/featurs/features/screen/dumbbells_screen.dart';
 import 'package:todo/featurs/features/screen/treadmill_screen.dart';
 
 class Equipment {
@@ -6,12 +7,14 @@ class Equipment {
   final String category;
   final String description;
   final String imageUrl;
+  final VoidCallback? onTap;
 
   Equipment({
     required this.name,
     required this.category,
     required this.description,
     required this.imageUrl,
+    this.onTap,
   });
 }
 
@@ -28,18 +31,34 @@ class _FeaturesScreenState extends State<FeaturesScreen> {
   final Color cardColor = const Color(0xFF1E1E24);
   final Color primaryGreen = const Color(0xFF86CC55);
 
-  final List<Equipment> instruments = [
+  late final List<Equipment> instruments = [
     Equipment(
       name: "Treadmill",
       category: "Cardio",
       description: "A motorized running belt used for walking, jogging, or high-intensity sprints. It builds incredible cardiovascular endurance, burns calories extremely fast, and is perfect for pre-workout warm-ups.",
       imageUrl: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?q=80&w=1470&auto=format&fit=crop",
+      onTap: (){
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (_) => const  TreadmillScreen(item: item,),
+          ),
+        );
+      }
     ),
     Equipment(
       name: "Dumbbells",
       category: "Free Weights",
       description: "Handheld weights used for isolation and compound exercises. Grab a pair to perform bicep curls, shoulder presses, and lunges to build functional upper and lower body muscle mass.",
       imageUrl: "https://images.unsplash.com/photo-1574680088814-c9e8a10d8a4d?q=80&w=1469&auto=format&fit=crop",
+        onTap: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const  DumbbellsScreen(item: item),
+            ),
+          );
+        }
     ),
     Equipment(
       name: "Smith Machine",
@@ -130,16 +149,8 @@ class _FeaturesScreenState extends State<FeaturesScreen> {
 
   Widget _buildEquipmentCard(Equipment item) {
     return GestureDetector(
-      onTap: () {
-        // এখানে প্রতিটা item আলাদা data নিয়ে next screen এ যাবে
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (_) => TreadmillScreen(item: item),
-          ),
-        );
-      },
-        child: Container(
+        onTap: item.onTap, // simply call the stored callback
+        child:Container(
       margin: const EdgeInsets.only(bottom: 20),
       height: 260,
       decoration: BoxDecoration(
@@ -214,7 +225,7 @@ class _FeaturesScreenState extends State<FeaturesScreen> {
           ],
         ),
       ),
-        ),
+        )
     );
   }
 }

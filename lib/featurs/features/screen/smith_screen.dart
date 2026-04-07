@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import '../../../common/app_shell.dart';
-import 'features_screen.dart';
+import 'main.dart'; // Equipment class এর জন্য import
 
-
-class DumbbellsScreen extends StatelessWidget {
+class SmithMachineScreen extends StatelessWidget {
   final Equipment item;
 
-  const DumbbellsScreen({super.key, required this.item});
+  const SmithMachineScreen({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
     final Color bgColor = const Color(0xFF121215);
     final Color primaryGreen = const Color(0xFF86CC55);
 
-    return  SubPageScaffold(
-      backgroundColor: const Color(0xFF121215),
-      parentTabIndex: 1,
+    return Scaffold(
+      backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: bgColor,
         elevation: 0,
@@ -82,8 +79,8 @@ class DumbbellsScreen extends StatelessWidget {
             Wrap(
               spacing: 10,
               children: const [
-                Chip(label: Text("Arms")),
-                Chip(label: Text("Shoulders")),
+                Chip(label: Text("Glutes")),
+                Chip(label: Text("Quads")),
                 Chip(label: Text("Legs")),
               ],
             ),
@@ -96,9 +93,9 @@ class DumbbellsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             const Text(
-              "1. Grab a pair of dumbbells.\n"
-                  "2. Perform bicep curls, shoulder presses, and lunges.\n"
-                  "3. Maintain proper form for safety and effectiveness.",
+              "1. Position yourself under the Smith Machine bar.\n"
+                  "2. Adjust the safety stops and select desired weight.\n"
+                  "3. Perform squats, lunges, or bench presses while keeping control.",
               style: TextStyle(color: Colors.white70, fontSize: 14),
             ),
             const SizedBox(height: 20),
@@ -110,13 +107,33 @@ class DumbbellsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             const Text(
-              "• Start with lighter weights if you are a beginner.\n"
-                  "• Keep your back straight during exercises.\n"
-                  "• Control the movement, avoid swinging the weights.",
+              "• Always use safety stops to prevent injury.\n"
+                  "• Keep your core engaged during movements.\n"
+                  "• Move in a slow, controlled manner.",
               style: TextStyle(color: Colors.white70, fontSize: 14),
             ),
             const SizedBox(height: 100), // bottom padding for button
           ],
+        ),
+      ),
+
+      // Bottom button
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(16),
+        color: const Color(0xFF1E1E24),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primaryGreen,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            padding: const EdgeInsets.symmetric(vertical: 16),
+          ),
+          onPressed: () {
+            // Start workout action
+          },
+          child: const Text(
+            "Start Workout",
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
+          ),
         ),
       ),
     );
