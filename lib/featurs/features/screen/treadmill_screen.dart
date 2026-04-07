@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../../../common/app_shell.dart';
 import 'features_screen.dart';
 
+
 class TreadmillScreen extends StatelessWidget {
   final Equipment item;
 
@@ -9,213 +10,159 @@ class TreadmillScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final Color bgColor = const Color(0xFF121215);
     final Color primaryGreen = const Color(0xFF86CC55);
 
     return  SubPageScaffold(
       backgroundColor: const Color(0xFF121215),
       parentTabIndex: 1,
+      appBar: AppBar(
+        backgroundColor: bgColor,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: () {
+            Navigator.pop(context);
+          },
+          icon: const Icon(Icons.arrow_back_ios, color: Color(0xff86CC55), size: 18),
+        ),
+        title: Text(
+          item.name,
+          style: const TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+            fontSize: 20,
+          ),
+        ),
+      ),
       body: SingleChildScrollView(
+        padding: const EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
-            Stack(
-              children: [
-                SizedBox(
-                  height: 320,
-                  width: double.infinity,
-                  child: Image.network(
-                    item.imageUrl,
-                    fit: BoxFit.cover,
-                  ),
+            Container(
+              height: 200,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                image: DecorationImage(
+                  image: NetworkImage(item.imageUrl),
+                  fit: BoxFit.cover,
                 ),
+              ),
+            ),
+            const SizedBox(height: 16),
 
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+              decoration: BoxDecoration(
+                color: primaryGreen.withValues(alpha: 0.2),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(color: primaryGreen.withValues(alpha: 0.5)),
+              ),
+              child: Text(
+                item.category,
+                style: TextStyle(
+                  color: primaryGreen,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+
+            Text(
+              item.description,
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 16,
+                height: 1.5,
+              ),
+            ),
+            const SizedBox(height: 20),
+
+            const Text(
+              "Target Muscles",
+              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 10,
+              children: [
                 Container(
-                  height: 320,
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                   decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: [
-                        Colors.black.withValues(alpha: 0.7),
-                        Colors.transparent,
-                        Colors.black,
-                      ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
+                    color: primaryGreen.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: primaryGreen.withOpacity(0.5)),
+                  ),
+                  child: Text(
+                    "Legs",
+                    style: TextStyle(
+                      color: primaryGreen,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
                 ),
-
-                SafeArea(
-                  child: IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () => Navigator.pop(context),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: primaryGreen.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: primaryGreen.withOpacity(0.5)),
+                  ),
+                  child: Text(
+                    "Glutes",
+                    style: TextStyle(
+                      color: primaryGreen,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                  decoration: BoxDecoration(
+                    color: primaryGreen.withOpacity(0.2),
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(color: primaryGreen.withOpacity(0.5)),
+                  ),
+                  child: Text(
+                    "Cardio",
+                    style: TextStyle(
+                      color: primaryGreen,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                 ),
               ],
             ),
+            const SizedBox(height: 20),
 
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
+            const Text(
+              "How to Use",
+              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              "1. Step on the treadmill and clip the safety key.\n"
+                  "2. Start with a low speed and warm up for 3-5 minutes.\n"
+                  "3. Gradually increase speed and incline for desired intensity.",
+              style: TextStyle(color: Colors.white70, fontSize: 14),
+            ),
+            const SizedBox(height: 20),
 
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: primaryGreen.withValues(alpha: 0.2),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Text(
-                      item.category,
-                      style: TextStyle(
-                        color: primaryGreen,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ),
-
-                  const SizedBox(height: 12),
-
-
-                  Text(
-                    item.name,
-                    style: const TextStyle(
-                      color: Colors.white,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  const SizedBox(height: 16),
-
-                  Text(
-                    item.description,
-                    style: const TextStyle(
-                      color: Colors.white70,
-                      fontSize: 15,
-                      height: 1.5,
-                    ),
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  const Text(
-                    "Target Muscles",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  Wrap(
-                    spacing: 10,
-                    children: [
-                      _chip("Legs"),
-                      _chip("Glutes"),
-                      _chip("Cardio"),
-                    ],
-                  ),
-
-                  const SizedBox(height: 30),
-
-                  const Text(
-                    "How to Use",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  _step("Step on the machine"),
-                  _step("Start with low speed"),
-                  _step("Increase intensity gradually"),
-                  _step("Maintain posture"),
-
-                  const SizedBox(height: 30),
-
-                  const Text(
-                    "Tips",
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-
-                  const SizedBox(height: 12),
-
-                  _tip("Keep your back straight"),
-                  _tip("Do not hold side rails"),
-                  _tip("Wear proper shoes"),
-
-                  const SizedBox(height: 40),
-
-
-                  const SizedBox(height: 40),
-                ],
-              ),
-            )
+            const Text(
+              "Tips",
+              style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(height: 8),
+            const Text(
+              "• Keep your back straight and look forward.\n"
+                  "• Avoid holding the side rails for better balance.\n"
+                  "• Wear proper running shoes for support.",
+              style: TextStyle(color: Colors.white70, fontSize: 14),
+            ),
+            const SizedBox(height: 100),
           ],
         ),
-      ),
-    );
-  }
-
-  Widget _chip(String text) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-      decoration: BoxDecoration(
-        color: const Color(0xFF1E1E24),
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: Text(
-        text,
-        style: const TextStyle(color: Colors.white),
-      ),
-    );
-  }
-
-  Widget _step(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        children: [
-          const Icon(Icons.check_circle,
-              color: Color(0xFF86CC55), size: 18),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(color: Colors.white70),
-            ),
-          )
-        ],
-      ),
-    );
-  }
-
-  Widget _tip(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
-      child: Row(
-        children: [
-          const Text("• ",
-              style: TextStyle(color: Colors.white, fontSize: 18)),
-          Expanded(
-            child: Text(
-              text,
-              style: const TextStyle(color: Colors.white70),
-            ),
-          )
-        ],
       ),
     );
   }
