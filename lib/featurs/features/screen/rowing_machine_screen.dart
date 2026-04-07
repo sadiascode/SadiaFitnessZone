@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'main.dart'; // Equipment class এর জন্য import
+import '../../../common/app_shell.dart';
+import 'features_screen.dart';
+
 
 class RowingMachineScreen extends StatelessWidget {
   final Equipment item;
@@ -11,8 +13,9 @@ class RowingMachineScreen extends StatelessWidget {
     final Color bgColor = const Color(0xFF121215);
     final Color primaryGreen = const Color(0xFF86CC55);
 
-    return Scaffold(
-      backgroundColor: bgColor,
+    return  SubPageScaffold(
+      backgroundColor: const Color(0xFF121215),
+      parentTabIndex: 1,
       appBar: AppBar(
         backgroundColor: bgColor,
         elevation: 0,
@@ -114,26 +117,6 @@ class RowingMachineScreen extends StatelessWidget {
             ),
             const SizedBox(height: 100), // bottom padding for button
           ],
-        ),
-      ),
-
-      // Bottom button
-      bottomNavigationBar: Container(
-        padding: const EdgeInsets.all(16),
-        color: const Color(0xFF1E1E24),
-        child: ElevatedButton(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: primaryGreen,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-            padding: const EdgeInsets.symmetric(vertical: 16),
-          ),
-          onPressed: () {
-            // Start workout action
-          },
-          child: const Text(
-            "Start Workout",
-            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
-          ),
         ),
       ),
     );

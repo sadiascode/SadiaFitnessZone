@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:todo/featurs/features/screen/cable_screen.dart';
 import 'package:todo/featurs/features/screen/dumbbells_screen.dart';
+import 'package:todo/featurs/features/screen/rowing_machine_screen.dart';
 import 'package:todo/featurs/features/screen/smith_screen.dart';
 import 'package:todo/featurs/features/screen/treadmill_screen.dart';
 import 'package:todo/featurs/features/screen/yoga_screen.dart';
@@ -130,7 +131,7 @@ class _FeaturesScreenState extends State<FeaturesScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => const  KettlebellsScreen(item: item),
+              builder: (_) => const  RowingMachineScreen(item: item),
             ),
           );
         }
