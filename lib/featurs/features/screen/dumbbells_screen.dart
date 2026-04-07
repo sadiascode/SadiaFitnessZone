@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../../../common/app_shell.dart';
 import 'features_screen.dart';
 
-
 class DumbbellsScreen extends StatelessWidget {
   final Equipment item;
 
