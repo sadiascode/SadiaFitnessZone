@@ -5,6 +5,8 @@ import 'package:todo/featurs/features/screen/smith_screen.dart';
 import 'package:todo/featurs/features/screen/treadmill_screen.dart';
 import 'package:todo/featurs/features/screen/yoga_screen.dart';
 
+import 'kettlebells_screen.dart';
+
 class Equipment {
   final String name;
   final String category;
@@ -114,7 +116,7 @@ class _FeaturesScreenState extends State<FeaturesScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => const  CableScreen(item: item),
+              builder: (_) => const  KettlebellsScreen(item: item),
             ),
           );
         }
@@ -124,6 +126,14 @@ class _FeaturesScreenState extends State<FeaturesScreen> {
       category: "Full Body Cardio",
       description: "A machine simulating water rowing for an incredible full-body workout. It maximizes calorie burn by pulling with your back and pushing with your legs, with zero impact on your knees.",
       imageUrl: "https://images.unsplash.com/photo-1549476464-37392f717541?q=80&w=1469&auto=format&fit=crop",
+        onTap: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const  KettlebellsScreen(item: item),
+            ),
+          );
+        }
     ),
   ];
 

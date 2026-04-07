@@ -1,21 +1,18 @@
 import 'package:flutter/material.dart';
-import '../../../common/app_shell.dart';
-import 'features_screen.dart';
+import 'main.dart'; // Equipment class এর জন্য import
 
-
-class KettlebellsScreen extends StatelessWidget {
+class RowingMachineScreen extends StatelessWidget {
   final Equipment item;
 
-  const KettlebellsScreen({super.key, required this.item});
+  const RowingMachineScreen({super.key, required this.item});
 
   @override
   Widget build(BuildContext context) {
     final Color bgColor = const Color(0xFF121215);
     final Color primaryGreen = const Color(0xFF86CC55);
 
-    return  SubPageScaffold(
-      backgroundColor: const Color(0xFF121215),
-      parentTabIndex: 1,
+    return Scaffold(
+      backgroundColor: bgColor,
       appBar: AppBar(
         backgroundColor: bgColor,
         elevation: 0,
@@ -82,9 +79,9 @@ class KettlebellsScreen extends StatelessWidget {
             Wrap(
               spacing: 10,
               children: const [
+                Chip(label: Text("Back")),
+                Chip(label: Text("Legs")),
                 Chip(label: Text("Core")),
-                Chip(label: Text("Glutes")),
-                Chip(label: Text("Hips")),
               ],
             ),
             const SizedBox(height: 20),
@@ -96,9 +93,9 @@ class KettlebellsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             const Text(
-              "1. Grab a kettlebell by the handle.\n"
-                  "2. Perform kettlebell swings, goblet squats, or Turkish get-ups.\n"
-                  "3. Maintain proper posture and controlled movements throughout.",
+              "1. Sit on the rowing machine with feet strapped in.\n"
+                  "2. Grip the handle and push with your legs while pulling the handle to your torso.\n"
+                  "3. Maintain a steady rhythm for a full-body cardio workout.",
               style: TextStyle(color: Colors.white70, fontSize: 14),
             ),
             const SizedBox(height: 20),
@@ -110,13 +107,33 @@ class KettlebellsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             const Text(
-              "• Start with lighter kettlebells to master form.\n"
-                  "• Keep your core tight during exercises.\n"
-                  "• Avoid jerky movements to prevent injury.",
+              "• Keep your back straight during strokes.\n"
+                  "• Breathe rhythmically and consistently.\n"
+                  "• Start with low resistance to master form.",
               style: TextStyle(color: Colors.white70, fontSize: 14),
             ),
             const SizedBox(height: 100), // bottom padding for button
           ],
+        ),
+      ),
+
+      // Bottom button
+      bottomNavigationBar: Container(
+        padding: const EdgeInsets.all(16),
+        color: const Color(0xFF1E1E24),
+        child: ElevatedButton(
+          style: ElevatedButton.styleFrom(
+            backgroundColor: primaryGreen,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            padding: const EdgeInsets.symmetric(vertical: 16),
+          ),
+          onPressed: () {
+            // Start workout action
+          },
+          child: const Text(
+            "Start Workout",
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.bold, fontSize: 16),
+          ),
         ),
       ),
     );
