@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:todo/featurs/features/screen/cable_screen.dart';
 import 'package:todo/featurs/features/screen/dumbbells_screen.dart';
 import 'package:todo/featurs/features/screen/smith_screen.dart';
 import 'package:todo/featurs/features/screen/treadmill_screen.dart';
@@ -99,7 +100,7 @@ class _FeaturesScreenState extends State<FeaturesScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (_) => const  YogaMatScreen(item: item),
+              builder: (_) => const  CableScreen(item: item),
             ),
           );
         }
@@ -109,6 +110,14 @@ class _FeaturesScreenState extends State<FeaturesScreen> {
       category: "Dynamic Strength",
       description: "Cast-iron weights with a handle used for explosive, full-body movements. Perfect for performing kettlebell swings and goblet squats to build immense core stability and hip power.",
       imageUrl: "https://images.unsplash.com/photo-1574680096145-d05b474e2155?q=80&w=1469&auto=format&fit=crop",
+        onTap: (){
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (_) => const  CableScreen(item: item),
+            ),
+          );
+        }
     ),
     Equipment(
       name: "Rowing Machine",
