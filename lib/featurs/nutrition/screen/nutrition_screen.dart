@@ -70,14 +70,14 @@ class _NutritionScreenState extends State<NutritionScreen> {
       description: "Creamy, high-protein snack that satisfies sweet cravings without packing on weight.",
       calories: "180 kcal",
       macros: "20g Protein • 3g Fat",
-      imageUrl: "https://images.unsplash.com/photo-1488477181946-6428a0291777?q=80&w=1470&auto=format&fit=crop",
+      imageUrl: "https://images.pexels.com/photos/29516115/pexels-photo-29516115.jpeg",
     ),
     FoodItem(
       name: "Green Detox Smoothie",
       description: "Packed with spinach, green apple, and ginger. An incredibly low-calorie metabolism booster.",
       calories: "150 kcal",
       macros: "4g Protein • 1g Fat",
-      imageUrl: "https://images.unsplash.com/photo-1610832958506-aa56368176cf?q=80&w=1470&auto=format&fit=crop",
+      imageUrl: "https://images.unsplash.com/photo-1610970881699-44a5587cabec?q=80&w=1200&auto=format&fit=crop",
     ),
   ];
 
@@ -87,7 +87,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
       description: "A colossal calorie bomb! Blended with banana, whole milk, and whey protein powder.",
       calories: "850 kcal",
       macros: "50g Protein • 30g Fat",
-      imageUrl: "https://images.unsplash.com/photo-1556881286-fc6915169721?q=80&w=1470&auto=format&fit=crop",
+      imageUrl: "https://images.unsplash.com/photo-1577805947697-89e18249d767?q=80&w=800&auto=format&fit=crop",
     ),
     FoodItem(
       name: "Beef Steak & Rice",
@@ -101,7 +101,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
       description: "Calorie dense snacking. Almonds, walnuts, and dried fruits for continuous energy surplus.",
       calories: "600 kcal (per cup)",
       macros: "20g Protein • 50g Fat",
-      imageUrl: "https://images.unsplash.com/photo-1550828520-4cb496926fc9?q=80&w=1470&auto=format&fit=crop",
+      imageUrl: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?q=80&w=1200&auto=format&fit=crop",
     ),
     FoodItem(
       name: "Whole Wheat Pasta Bowl",
@@ -122,7 +122,7 @@ class _NutritionScreenState extends State<NutritionScreen> {
       description: "Huge breakfast surplus loaded with whey, oats, and heavy maple syrup for massive gains.",
       calories: "880 kcal",
       macros: "55g Protein • 20g Fat",
-      imageUrl: "https://images.unsplash.com/photo-1565299507177-b0ac66763828?q=80&w=1470&auto=format&fit=crop",
+      imageUrl: "https://images.pexels.com/photos/14906566/pexels-photo-14906566.jpeg",
     ),
   ];
 
